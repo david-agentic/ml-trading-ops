@@ -1,0 +1,65 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+      - phase-1/foundation
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+  CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+jobs:
+  deploy-api:
+    name: Deploy API
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Determine environment
+        id: env
+        run: |
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            echo "wrangler_env_flag=--env production" >> "$GITHUB_OUTPUT"
+          else
+            echo "wrangler_env_flag=" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run database migrations
+        working-directory: packages/db
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: pnpm db:migrate
+
+      - name: Set Workers secrets
+        working-directory: apps/api
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          JWT_SIGNING_KEY: ${{ secrets.JWT_SIGNING_KEY }}
+          JWT_REFRESH_KEY: ${{ secrets.JWT_REFRESH_KEY }}
+        run: |
+          echo "$DATABASE_URL" | npx wrangler@^3 secret put DATABASE_URL ${{ steps.env.outputs.wrangler_env_flag }}
+          echo "$JWT_SIGNING_KEY" | npx wrangler@^3 secret put JWT_SIGNING_KEY ${{ steps.env.outputs.wrangler_env_flag }}
+          echo "$JWT_REFRESH_KEY" | npx wrangler@^3 secret put JWT_REFRESH_KEY ${{ steps.env.outputs.wrangler_env_flag }}
+
+      - name: Deploy
+        working-directory: apps/api
+        run: npx wrangler@^3 deploy ${{ steps.env.outputs.wrangler_env_flag }}

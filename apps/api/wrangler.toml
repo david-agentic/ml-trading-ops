@@ -1,6 +1,11 @@
-name = "ml-trading-ops-api"
+# Top-level name is the preview deploy target (pushes to phase-1/foundation).
+# `wrangler deploy --env production` (main branch only) deploys as the real name.
+name = "ml-trading-ops-api-preview"
 main = "src/index.ts"
 compatibility_date = "2024-11-01"
 
 [observability]
 enabled = true
+
+[env.production]
+name = "ml-trading-ops-api"
