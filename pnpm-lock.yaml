@@ -40,7 +40,7 @@ importers:
         version: link:../../packages/shared
       drizzle-orm:
         specifier: ^0.38.0
-        version: 0.38.4(@cloudflare/workers-types@4.20260702.1)(@neondatabase/serverless@0.10.4)(@types/pg@8.11.6)
+        version: 0.38.4(@cloudflare/workers-types@4.20260702.1)(@electric-sql/pglite@0.2.17)(@neondatabase/serverless@0.10.4)(@types/pg@8.11.6)
       hono:
         specifier: ^4.6.0
         version: 4.12.28
@@ -67,8 +67,11 @@ importers:
         version: 0.10.4
       drizzle-orm:
         specifier: ^0.38.0
-        version: 0.38.4(@cloudflare/workers-types@4.20260702.1)(@neondatabase/serverless@0.10.4)(@types/pg@8.11.6)
+        version: 0.38.4(@cloudflare/workers-types@4.20260702.1)(@electric-sql/pglite@0.2.17)(@neondatabase/serverless@0.10.4)(@types/pg@8.11.6)
     devDependencies:
+      '@electric-sql/pglite':
+        specifier: ^0.2.15
+        version: 0.2.17
       dotenv-cli:
         specifier: ^8.0.0
         version: 8.0.0
@@ -104,6 +107,9 @@ packages:
 
   '@drizzle-team/brocli@0.10.2':
     resolution: {integrity: sha512-z33Il7l5dKjUgGULTqBsQBQwckHh5AbIuxhdsIxDDiZAzBOrZO6q9ogcWC65kU382AfynTfgNumVcNIjuIua6w==}
+
+  '@electric-sql/pglite@0.2.17':
+    resolution: {integrity: sha512-qEpKRT2oUaWDH6tjRxLHjdzMqRUGYDnGZlKrnL4dJ77JVMcP2Hpo3NYnOSPKdZdeec57B6QPprCUFg0picx5Pw==}
 
   '@esbuild-kit/core-utils@3.3.2':
     resolution: {integrity: sha512-sPRAnw9CdSsRmEtnsl2WXWdyquogVpB3yZ3dgwJfe8zrOzTsV7cJvmwrKVa+0ma5BoiGJ+BoqkMvawbayKUsqQ==}
@@ -1798,6 +1804,8 @@ snapshots:
 
   '@drizzle-team/brocli@0.10.2': {}
 
+  '@electric-sql/pglite@0.2.17': {}
+
   '@esbuild-kit/core-utils@3.3.2':
     dependencies:
       esbuild: 0.18.20
@@ -2487,9 +2495,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.38.4(@cloudflare/workers-types@4.20260702.1)(@neondatabase/serverless@0.10.4)(@types/pg@8.11.6):
+  drizzle-orm@0.38.4(@cloudflare/workers-types@4.20260702.1)(@electric-sql/pglite@0.2.17)(@neondatabase/serverless@0.10.4)(@types/pg@8.11.6):
     optionalDependencies:
       '@cloudflare/workers-types': 4.20260702.1
+      '@electric-sql/pglite': 0.2.17
       '@neondatabase/serverless': 0.10.4
       '@types/pg': 8.11.6
 

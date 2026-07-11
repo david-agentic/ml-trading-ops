@@ -2,6 +2,8 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 import { requestId } from 'hono/request-id';
+import { dbMiddleware } from './middleware/db';
+import { authRoutes } from './routes/auth';
 import type { AppEnv } from './types';
 
 const app = new Hono<AppEnv>();
@@ -24,5 +26,8 @@ app.get('/health', (c) =>
     timestamp: new Date().toISOString(),
   }),
 );
+
+app.use('/auth/*', dbMiddleware);
+app.route('/auth', authRoutes);
 
 export default app;
