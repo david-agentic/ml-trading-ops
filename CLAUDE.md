@@ -454,6 +454,47 @@ Audit log is **append-only**. No delete endpoint. Search, filter, and export in 
 
 ---
 
+### 15.1 Mobile-First & PWA Standards
+
+The system is delivered as ONE Progressive Web App at ml-trading-ops.pages.dev covering all four portals. Users install once; after login they land in the portal(s) their role grants them. Super Admin can switch portals via a top-bar switcher.
+
+Design principle per portal:
+
+- Reseller portal: MOBILE-FIRST. Design phone-first, then progressively enhance for desktop. Style benchmark: Shopify-style storefront browsing — clean product cards, image-forward, cart drawer, sticky action buttons. Simplicity over cleverness. The target user is a non-technical person placing orders quickly on their phone. No complex interactions, no hidden gestures beyond standard tap and swipe-to-close-sheet.
+- Shipping portal: MOBILE-FIRST for warehouse staff on phones/tablets. Big touch targets (min 44px), one-tap primary actions, bottom action sheets for tracking entry, scrollable card queues. Desktop view for shipping managers gives denser table layouts.
+- Finance portal: ADAPTIVE. Approval queue works as swipeable/tappable cards on mobile with one-tap approve/hold and full-screen payment proof viewer. Desktop shows side-by-side proof + form layouts for deeper review sessions.
+- Admin portal: DESKTOP-FIRST but fully mobile-capable. Dense tables and multi-column dashboards on desktop; on mobile, tables collapse to cards, dashboards stack, actions move into bottom sheets.
+
+Adaptive component rules (apply everywhere):
+
+- Tables on desktop become cards on mobile. Never horizontal-scroll a wide table on a phone.
+- Dropdowns and select menus become bottom sheets on mobile.
+- Modals become full-screen sheets on mobile (dismiss by swipe-down or explicit close).
+- Navigation: sidebar on desktop, bottom tab bar on mobile for user-facing portals (Reseller, Shipping, Finance). Admin gets a hamburger + drawer on mobile since it has more sections than fit in a tab bar.
+- Sticky bottom action buttons on mobile for primary actions (Place Order, Confirm Dispatch, Approve Payment).
+- Loading skeletons match the target layout — do not show a desktop-shaped skeleton on a phone.
+
+PWA requirements:
+
+- Single manifest.json at the root serving the "MLT Ops" installable app.
+- Optional second manifest served conditionally at /ship path so Shipping staff can install a dedicated "MLT Shipping" icon on warehouse tablets — same codebase, separate PWA identity. Build the plumbing; do not require its use.
+- Service worker with offline shell (login screen and static assets cacheable; API calls network-first).
+- Install prompt shown contextually — after successful login, on second visit, dismissible and remembered.
+- iOS-compatible install (Safari): correct apple-touch-icon, splash screens, status bar theming.
+- Push notifications: schema-ready but disabled by default. Enable in Phase 9.
+
+Reseller portal specific UX (Shopify-simple style):
+
+- Home: greeting, "Reorder from history" quick tiles, category chips, featured/new products.
+- Catalog: category tabs at top, product cards in a 2-column grid on mobile, filter/search icon in top bar, "Add" button on each card (one tap adds default quantity, tap the quantity to adjust).
+- Product detail: full-screen sheet with image, description, price after discount clearly shown, quantity stepper, sticky "Add to Cart" at bottom.
+- Cart: full-screen on mobile, itemized list, edit quantity inline, sticky total + "Place Order" button at bottom.
+- Checkout: simple stepper — Delivery address → Payment method + proof upload → Review → Submit.
+- Order history: scrollable list of order cards with clear status badges, tap to expand for details and tracking.
+- No infinite dropdowns, no nested modals, no hidden features. Every action must be reachable in at most two taps from a portal's home screen.
+
+---
+
 ## 16. Development Phases
 
 Each phase produces a **working, deployed, testable slice**. Owner tests → approves or requests changes → next phase begins.
@@ -462,10 +503,10 @@ Each phase produces a **working, deployed, testable slice**. Owner tests → app
 |---|---|---|
 | 1 | **Foundation** | Repo scaffolding, DB schema, migrations, auth (login/logout/reset), JWT + refresh, user/role management with RBAC, Super Admin seeded, base UI shell (login, sidebar, top bar, portal switcher, dark mode), deploys live |
 | 2 | **Product Management** | Product CRUD, categories, discount tiers, per-user tier assignment, exclude-from-discount flag, product import CSV, 70-product seed |
-| 3 | **Reseller Portal** | Catalog browsing, cart, order builder, direct-customer vs self-order, payment proof upload, order submission, order history, status tracking |
+| 3 | **Reseller Portal** | Catalog browsing, cart, order builder, direct-customer vs self-order, payment proof upload, order submission, order history, status tracking. Mobile-first PWA with Shopify-style simple UX, bottom tab nav, install prompt, offline shell for login screen and static assets. |
 | 4 | **Admin Portal** | Dashboard KPIs, All Orders list + filters + bulk actions, order detail view + edit with audit protection, user management UI |
-| 5 | **Finance Portal** | Payment review queue, cash confirmation, partial payment handling, balance calc, hold/approve/release, override rules, finance audit trail |
-| 6 | **Shipping Portal + Printing** | Ready-to-pack, packed, dispatched, delivered queues; picking sheet generation; PrintNode integration (disabled until keys added); reprint audit; courier + tracking entry |
+| 5 | **Finance Portal** | Payment review queue, cash confirmation, partial payment handling, balance calc, hold/approve/release, override rules, finance audit trail. Mobile-adaptive approval queue with swipeable cards and full-screen proof viewer; installable PWA identity. |
+| 6 | **Shipping Portal + Printing** | Ready-to-pack, packed, dispatched, delivered queues; picking sheet generation; PrintNode integration (disabled until keys added); reprint audit; courier + tracking entry. Mobile/tablet-first warehouse UX with big touch targets and bottom action sheets; optional separate PWA install path at /ship for a dedicated 'MLT Shipping' home-screen icon. |
 | 7 | **Reports Centre** | All admin reports; filter presets; CSV/XLSX/PDF exports; reseller reports section |
 | 8 | **Audit Log** | Full audit trail viewer, filter, search, export, detail modal |
 | 9 | **Integrations scaffolding** | Stripe payment integration (disabled), QBO sync queue (disabled), email notifications (SendGrid or Resend), Cloudflare Queues wiring |
@@ -520,6 +561,7 @@ Each phase produces a **working, deployed, testable slice**. Owner tests → app
 13. **Prefer boring, proven solutions.** No exotic libraries. Stick to the stack in Section 3.
 14. **Never claim "impossible to hack" or "100% secure".** Use accurate security language.
 15. **Never touch the old SARMS system.** It runs in parallel and is out of scope.
+16. **Every user-facing page must be designed mobile-first** with a real mobile experience (bottom nav, cards, sheets, sticky action buttons), then progressively enhanced for desktop. Never build a desktop-only layout and shrink it for mobile. The Reseller portal in particular must feel Shopify-simple: clean, image-forward, one-tap actions, no hidden complexity. Non-technical users are the target.
 
 ### Communication protocol with the owner
 - When a phase is done, write a short summary in `docs/phases/phase-NN-report.md`: what was built, what to test, known limitations, next-phase preview.
