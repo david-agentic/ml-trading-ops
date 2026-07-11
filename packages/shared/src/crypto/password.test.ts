@@ -23,8 +23,8 @@ describe('password hashing', () => {
   it(
     'CPU-budget spike: measures real hashing cost — currently under plain Node, ' +
       'NOT the true Workers/workerd runtime (wrangler failed to install on this ' +
-      'network, see vitest.config.ts note); treat this as a provisional proxy ' +
-      'figure only, to be re-measured on real Workers infra at first deploy ' +
+      'network, see apps/api/vitest.config.ts note); treat this as a provisional ' +
+      'proxy figure only, to be re-measured on real Workers infra at first deploy ' +
       '(Task #12) before phase-01-report.md is finalized',
     async () => {
       const start = performance.now();

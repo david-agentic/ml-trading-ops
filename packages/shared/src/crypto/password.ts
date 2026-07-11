@@ -8,6 +8,10 @@ import { argon2id, argon2Verify } from 'hash-wasm';
  * wrangler's workerd binary failed to install on this network (see
  * apps/api/vitest.config.ts) — the true Workers CPU-ms figure is still unmeasured
  * and must be re-verified at first live deploy (Task #12) before this is final.
+ *
+ * Lives in packages/shared (not apps/api) so packages/db's seed script can hash the
+ * Super Admin's temp password without apps/api depending on packages/db depending
+ * on apps/api (a cycle) — packages/shared has no dependency on either.
  */
 const ARGON2_MEMORY_SIZE_KIB = 1024;
 const ARGON2_ITERATIONS = 2;

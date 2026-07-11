@@ -1,3 +1,4 @@
+export * from './crypto/password';
 export * from './constants/roles';
 export * from './constants/permissions';
 export * from './constants/audit';
