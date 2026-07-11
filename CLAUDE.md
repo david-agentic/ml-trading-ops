@@ -77,7 +77,7 @@ ML Trading International Ltd is a UK-based B2B supplier of **research-use-only c
 - **Cloudflare Cron Triggers** for scheduled reports and daily tasks
 
 ### Deployment
-- **GitHub → Cloudflare Pages** (auto-deploy on push to `main`)
+- **GitHub → Cloudflare** (auto-deploy on push to `main`). Web (`apps/web`) deploys via the **OpenNext Cloudflare adapter** (`@opennextjs/cloudflare`) as a Cloudflare Worker with Workers Static Assets — not the literal "Pages" product, since its Next.js adapter (`@cloudflare/next-on-pages`) is deprecated. Same GitHub-connected auto-deploy on push to `main` and per-PR preview URLs are preserved (via Cloudflare Workers Builds); only the underlying product name changed. *(Amended Phase 1, owner-approved.)*
 - **Cloudflare Workers** for API (deployed via `wrangler`)
 - Environment variables stored as **Cloudflare secrets**, never in the repo
 
@@ -519,9 +519,10 @@ Each phase produces a **working, deployed, testable slice**. Owner tests → app
 ## 17. Deployment & DevOps
 
 ### Environments
-- **Production:** `ml-trading-ops.pages.dev` (Cloudflare Pages) + API on Cloudflare Workers, DB = Neon `production` branch
+- **Production:** *(URL pending — see note below)* served by a Cloudflare Worker via the OpenNext adapter (see Section 3) + API on Cloudflare Workers, DB = Neon `production` branch
 - **Preview:** every GitHub PR gets a preview deployment automatically
 - **Local dev:** `pnpm dev` runs web + api locally, connects to a Neon `dev` branch
+- **Production URL note (Phase 1, owner-approved):** since `apps/web` no longer deploys to the literal Cloudflare Pages product, it will not get a `*.pages.dev` URL. It gets a free `*.workers.dev` URL instead, exact value known only after the first live deploy. All "ml-trading-ops.pages.dev" references elsewhere in this file (Section 1, Section 19, Rule 9) will be updated to the real URL once it's confirmed — do not treat them as accurate until that update lands. Custom domain to be added post-Phase-1 once the owner selects a domain name for ML Trading International Ltd (likely a UK-focused `.co.uk` domain). Migration path: add custom domain in Cloudflare, no code changes required.
 
 ### Branching
 - `main` = production. Every push auto-deploys.
