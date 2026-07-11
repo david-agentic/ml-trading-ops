@@ -13,6 +13,7 @@
   "dependencies": {
     "@ml-trading-ops/db": "workspace:*",
     "@ml-trading-ops/shared": "workspace:*",
+    "drizzle-orm": "^0.38.0",
     "hono": "^4.6.0",
     "jose": "^5.9.0"
   },

@@ -2,12 +2,9 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 import { requestId } from 'hono/request-id';
+import type { AppEnv } from './types';
 
-// Populated in Stage D as auth/DB pieces land: DATABASE_URL, JWT_SIGNING_KEY,
-// JWT_REFRESH_KEY, RESEND_API_KEY, EMAIL_FROM, rate-limit KV binding, etc.
-export type Env = Record<string, never>;
-
-const app = new Hono<{ Bindings: Env }>();
+const app = new Hono<AppEnv>();
 
 app.use('*', requestId());
 app.use('*', logger());
