@@ -1,5 +1,5 @@
-import { passwordSchema } from '@ml-trading-ops/shared';
 import { describe, expect, it } from 'vitest';
+import { passwordSchema } from '../validators/auth';
 import { generateTempPassword } from './generateTempPassword';
 
 describe('generateTempPassword', () => {

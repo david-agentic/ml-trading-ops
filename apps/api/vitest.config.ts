@@ -12,5 +12,10 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
   test: {
     include: ['src/**/*.test.ts'],
+    // PGlite (in-memory WASM Postgres, used by integration tests in routes/*.test.ts)
+    // has a real cold-start cost — WASM init + running all committed migrations —
+    // which can exceed Vitest's 5s default when multiple test files spin up their
+    // own instance in parallel. 20s gives real headroom without masking genuine hangs.
+    testTimeout: 20000,
   },
 });

@@ -1,9 +1,15 @@
-import { hashPassword, PERMISSION_ACTIONS, PERMISSION_RESOURCES, ROLE_LABELS, ROLES } from '@ml-trading-ops/shared';
+import {
+  generateTempPassword,
+  hashPassword,
+  PERMISSION_ACTIONS,
+  PERMISSION_RESOURCES,
+  ROLE_LABELS,
+  ROLES,
+} from '@ml-trading-ops/shared';
 import { eq } from 'drizzle-orm';
 import { createDb } from '../client';
 import { permissions, roles, users } from '../schema';
 import { buildAuditLogInsert } from '../audit';
-import { generateTempPassword } from './generateTempPassword';
 
 const SUPER_ADMIN_EMAIL = 'daoodtaxexpertllc@gmail.com';
 const SUPER_ADMIN_NAME = 'Muhammad Daood';

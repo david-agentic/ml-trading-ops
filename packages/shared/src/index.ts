@@ -1,5 +1,6 @@
 export * from './crypto/password';
 export * from './crypto/token';
+export * from './crypto/generateTempPassword';
 export * from './constants/roles';
 export * from './constants/permissions';
 export * from './constants/audit';

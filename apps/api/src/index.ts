@@ -4,6 +4,7 @@ import { logger } from 'hono/logger';
 import { requestId } from 'hono/request-id';
 import { dbMiddleware } from './middleware/db';
 import { authRoutes } from './routes/auth';
+import { userRoutes } from './routes/users';
 import type { AppEnv } from './types';
 
 const app = new Hono<AppEnv>();
@@ -29,5 +30,8 @@ app.get('/health', (c) =>
 
 app.use('/auth/*', dbMiddleware);
 app.route('/auth', authRoutes);
+
+app.use('/users/*', dbMiddleware);
+app.route('/users', userRoutes);
 
 export default app;
