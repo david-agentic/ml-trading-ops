@@ -50,6 +50,10 @@ lerna-debug.log*
 .DS_Store
 Thumbs.db
 
+# Claude Code local settings
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
+
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts

@@ -30,7 +30,30 @@ importers:
         specifier: ^5.7.0
         version: 5.9.3
 
-  apps/api: {}
+  apps/api:
+    dependencies:
+      '@ml-trading-ops/db':
+        specifier: workspace:*
+        version: link:../../packages/db
+      '@ml-trading-ops/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
+      hash-wasm:
+        specifier: ^4.12.0
+        version: 4.12.0
+      hono:
+        specifier: ^4.6.0
+        version: 4.12.28
+      jose:
+        specifier: ^5.9.0
+        version: 5.10.0
+    devDependencies:
+      '@cloudflare/workers-types':
+        specifier: ^4.20241127.0
+        version: 4.20260702.1
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@26.1.1)
 
   apps/web: {}
 
@@ -44,7 +67,7 @@ importers:
         version: 0.10.4
       drizzle-orm:
         specifier: ^0.38.0
-        version: 0.38.4(@neondatabase/serverless@0.10.4)(@types/pg@8.11.6)
+        version: 0.38.4(@cloudflare/workers-types@4.20260702.1)(@neondatabase/serverless@0.10.4)(@types/pg@8.11.6)
     devDependencies:
       dotenv-cli:
         specifier: ^8.0.0
@@ -72,6 +95,9 @@ importers:
   packages/ui: {}
 
 packages:
+
+  '@cloudflare/workers-types@4.20260702.1':
+    resolution: {integrity: sha512-mOhf5TUEB1m2vPrxtqoIGfz0fUC9xyxRDx5gWHy5s+OCo6dcV+g7wI1R7gYCMFohhqF/2y2xeKVwMwCJjfn/WA==}
 
   '@drizzle-team/brocli@0.10.2':
     resolution: {integrity: sha512-z33Il7l5dKjUgGULTqBsQBQwckHh5AbIuxhdsIxDDiZAzBOrZO6q9ogcWC65kU382AfynTfgNumVcNIjuIua6w==}
@@ -1333,6 +1359,13 @@ packages:
     resolution: {integrity: sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==}
     engines: {node: '>=8'}
 
+  hash-wasm@4.12.0:
+    resolution: {integrity: sha512-+/2B2rYLb48I/evdOIhP+K/DD2ca2fgBjp6O+GBEnCDk2e4rpeXIK8GvIyRPjTezgmWn9gmKwkQjjx6BtqDHVQ==}
+
+  hono@4.12.28:
+    resolution: {integrity: sha512-YwUvVpSF7m1yOblFPrU3Hbo8XhPheBoiyfGuII6z19LnOr6JpDnyyp7LFNrfV56wS8tpvtBFGRISHN02pDdLOA==}
+    engines: {node: '>=16.9.0'}
+
   ignore@5.3.2:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
     engines: {node: '>= 4'}
@@ -1374,6 +1407,9 @@ packages:
   isexe@3.1.5:
     resolution: {integrity: sha512-6B3tLtFqtQS4ekarvLVMZ+X+VlvQekbe4taUkf/rhVO3d/h0M2rfARm/pXLcPEsjjMsFgrFgSrhQIxcSVrBz8w==}
     engines: {node: '>=18'}
+
+  jose@5.10.0:
+    resolution: {integrity: sha512-s+3Al/p9g32Iq+oqXxkW//7jk2Vig6FF1CFqzVXoTUXt2qz89YWbL+OwS17NFYEvxC35n0FKeGO2LGYSxeM2Gg==}
 
   js-yaml@4.3.0:
     resolution: {integrity: sha512-1td788aAnnZ5qs7V2QIRl1owjtYpbKt749Y3xauqQgwIIGF/xXWz1wMTEBx5O3LK3lXLVuqXPdPxj2BoFHaW9Q==}
@@ -1754,6 +1790,8 @@ packages:
     resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
 
 snapshots:
+
+  '@cloudflare/workers-types@4.20260702.1': {}
 
   '@drizzle-team/brocli@0.10.2': {}
 
@@ -2446,8 +2484,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.38.4(@neondatabase/serverless@0.10.4)(@types/pg@8.11.6):
+  drizzle-orm@0.38.4(@cloudflare/workers-types@4.20260702.1)(@neondatabase/serverless@0.10.4)(@types/pg@8.11.6):
     optionalDependencies:
+      '@cloudflare/workers-types': 4.20260702.1
       '@neondatabase/serverless': 0.10.4
       '@types/pg': 8.11.6
 
@@ -2722,6 +2761,10 @@ snapshots:
 
   has-flag@4.0.0: {}
 
+  hash-wasm@4.12.0: {}
+
+  hono@4.12.28: {}
+
   ignore@5.3.2: {}
 
   ignore@7.0.5: {}
@@ -2751,6 +2794,8 @@ snapshots:
   isexe@2.0.0: {}
 
   isexe@3.1.5: {}
+
+  jose@5.10.0: {}
 
   js-yaml@4.3.0:
     dependencies:

@@ -1,5 +1,24 @@
 {
   "name": "@ml-trading-ops/api",
   "version": "0.1.0",
-  "private": true
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . --max-warnings=0",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "@ml-trading-ops/db": "workspace:*",
+    "@ml-trading-ops/shared": "workspace:*",
+    "hash-wasm": "^4.12.0",
+    "hono": "^4.6.0",
+    "jose": "^5.9.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241127.0",
+    "vitest": "^2.1.0"
+  }
 }
