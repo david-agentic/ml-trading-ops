@@ -15,9 +15,24 @@ enabled = true
 binding = "RATE_LIMIT_KV"
 id = "REPLACE_WITH_REAL_KV_NAMESPACE_ID"
 
+# Native Rate Limiting binding — fast first-line flood guard on /auth/*, ahead of
+# the precise KV-based login rule (see middleware/nativeRateLimit.ts). Unlike the
+# KV namespace above, namespace_id here is NOT a real Cloudflare resource id — it's
+# an arbitrary identifier you pick yourself; no dashboard setup needed. 30
+# requests/10s per IP (rationale in nativeRateLimit.ts).
+[[ratelimits]]
+name = "AUTH_RATE_LIMITER"
+namespace_id = "1001"
+simple = { limit = 30, period = 10 }
+
 [env.production]
 name = "ml-trading-ops-api"
 
 [[env.production.kv_namespaces]]
 binding = "RATE_LIMIT_KV"
 id = "REPLACE_WITH_REAL_KV_NAMESPACE_ID"
+
+[[env.production.ratelimits]]
+name = "AUTH_RATE_LIMITER"
+namespace_id = "1001"
+simple = { limit = 30, period = 10 }

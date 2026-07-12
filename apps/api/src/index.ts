@@ -3,6 +3,7 @@ import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 import { requestId } from 'hono/request-id';
 import { dbMiddleware } from './middleware/db';
+import { authFloodGuard } from './middleware/nativeRateLimit';
 import { authRoutes } from './routes/auth';
 import { userRoutes } from './routes/users';
 import type { AppEnv } from './types';
@@ -28,6 +29,10 @@ app.get('/health', (c) =>
   }),
 );
 
+// Native binding (fast, blunt flood guard) runs first; the precise KV-based
+// 5/15min login rule (loginRateLimiter, mounted inside authRoutes on POST /login
+// specifically) runs second, after dbMiddleware/authRoutes take over.
+app.use('/auth/*', authFloodGuard);
 app.use('/auth/*', dbMiddleware);
 app.route('/auth', authRoutes);
 
