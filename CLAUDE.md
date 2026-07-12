@@ -11,7 +11,8 @@
 - **Short name:** MLT Ops
 - **Business owner:** ML Trading International Ltd (UK-registered)
 - **System owner / Super Admin:** Muhammad Daood — `daoodtaxexpertllc@gmail.com`
-- **Production URL:** `https://ml-trading-ops.pages.dev`
+- **Production URL:** *(not yet deployed — pending owner-approved merge of `phase-1/foundation` to `main`)*. Will be `https://ml-trading-ops-api.business-portal.workers.dev` for the API once merged. The web worker's URL is not yet known — `apps/web` is still a stub (Stage E not started).
+- **Live preview URL (current, Phase 1 canary — verified 12/07/2026):** API — `https://ml-trading-ops-api-preview.business-portal.workers.dev`. See Section 17 for the full preview/production naming convention.
 - **GitHub repo:** `https://github.com/david-agentic/ml-trading-ops`
 - **Language:** English only
 - **Base currency:** GBP (£)
@@ -526,10 +527,12 @@ Each phase produces a **working, deployed, testable slice**. Owner tests → app
 ## 17. Deployment & DevOps
 
 ### Environments
-- **Production:** *(URL pending — see note below)* served by a Cloudflare Worker via the OpenNext adapter (see Section 3) + API on Cloudflare Workers, DB = Neon `production` branch
-- **Preview:** every GitHub PR gets a preview deployment automatically
+- **Production:** *(not yet deployed — pending owner-approved merge of `phase-1/foundation` to `main`)*. Once merged, the API deploys as the Worker named `ml-trading-ops-api` at `https://ml-trading-ops-api.business-portal.workers.dev`, via `wrangler deploy --env production` (see `apps/api/wrangler.toml`'s `[env.production]` block). DB = Neon `production` branch.
+- **Preview (actual mechanism, corrected from the original assumption below):** the `Deploy` GitHub Actions workflow (`.github/workflows/deploy.yml`) triggers on push to `main` **or** `phase-1/foundation` specifically — it is a branch-based deploy we built ourselves, not a generic per-PR preview mechanism. (The "per-PR preview URLs via Cloudflare Workers Builds" wording elsewhere in this file describes Cloudflare's own Git-integration product, which this repo does not use — flagged here as a known stale reference, not yet corrected there.) Pushing to `phase-1/foundation` deploys the Worker named `ml-trading-ops-api-preview` (the top-level, unprefixed block in `wrangler.toml`) to `https://ml-trading-ops-api-preview.business-portal.workers.dev` — **currently live**, first verified 12/07/2026.
+- **Web:** not yet deployed — `apps/web` is still a stub (Stage E not started). No worker name or URL exists yet; this section will be updated once Stage E ships a real deploy.
 - **Local dev:** `pnpm dev` runs web + api locally, connects to a Neon `dev` branch
-- **Production URL note (Phase 1, owner-approved):** since `apps/web` no longer deploys to the literal Cloudflare Pages product, it will not get a `*.pages.dev` URL. It gets a free `*.workers.dev` URL instead, exact value known only after the first live deploy. All "ml-trading-ops.pages.dev" references elsewhere in this file (Section 1, Section 19, Rule 9) will be updated to the real URL once it's confirmed — do not treat them as accurate until that update lands. Custom domain to be added post-Phase-1 once the owner selects a domain name for ML Trading International Ltd (likely a UK-focused `.co.uk` domain). Migration path: add custom domain in Cloudflare, no code changes required.
+- **Account workers.dev subdomain:** `business-portal` (owner-configured in Cloudflare; confirmed via the live preview URL above).
+- **Production URL note (Phase 1, owner-approved):** since `apps/web` no longer deploys to the literal Cloudflare Pages product, it will not get a `*.pages.dev` URL. It gets a free `*.workers.dev` URL instead (naming convention above). Custom domain to be added post-Phase-1 once the owner selects a domain name for ML Trading International Ltd (likely a UK-focused `.co.uk` domain). Migration path: add custom domain in Cloudflare, no code changes required.
 
 ### Branching
 - `main` = production. Every push auto-deploys.
@@ -562,7 +565,7 @@ Each phase produces a **working, deployed, testable slice**. Owner tests → app
 6. **Never delete data destructively.** Prefer soft-delete (`deleted_at` timestamp). Audit log entries are append-only.
 7. **Always write migrations.** Any schema change ships with a migration file in the same commit.
 8. **Always write tests for business logic.** Payment calculations, discount application, order state transitions must have unit tests.
-9. **Always deploy before saying "done".** A phase is not complete until it is live at `ml-trading-ops.pages.dev` and the owner can test it.
+9. **Always deploy before saying "done".** A phase is not complete until it is live at the production URL (see Section 17) and the owner can test it. During Phase 1, interim testing happens on the preview URL; the final gate is the `main`-merged production URL.
 10. **Always update this CLAUDE.md** when a decision or rule changes. This file is the source of truth.
 11. **Match the UI standards** in Section 15. Do not invent visual patterns. Follow the benchmark aesthetic.
 12. **Ask before large refactors.** Small refactors within a phase are fine. Cross-phase refactors need owner approval.
@@ -583,7 +586,7 @@ Each phase produces a **working, deployed, testable slice**. Owner tests → app
 
 A phase is **not** done unless every item is true:
 
-- ✅ Code merged to `main` and deployed to `ml-trading-ops.pages.dev`
+- ✅ Code merged to `main` and deployed to production (`https://ml-trading-ops-api.business-portal.workers.dev` — see Section 17). **Interim Phase 1 testing note:** until the owner approves the merge to `main`, verification happens against the live preview URL, `https://ml-trading-ops-api-preview.business-portal.workers.dev` (API only; web not yet deployed).
 - ✅ All migrations applied to production Neon DB
 - ✅ Zero TypeScript errors, zero lint errors
 - ✅ Business logic unit tests pass
