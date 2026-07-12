@@ -7,13 +7,11 @@ compatibility_date = "2024-11-01"
 [observability]
 enabled = true
 
-# TODO: replace with the real KV namespace id (owner creates it once via the
-# Cloudflare dashboard: Workers & Pages -> KV -> Create namespace). Same namespace
-# used for both preview and production — Phase 1 has no real business data yet, so
-# a single shared rate-limit store is fine (see phase-01-plan.md).
+# Same namespace used for both preview and production — Phase 1 has no real
+# business data yet, so a single shared rate-limit store is fine (see phase-01-plan.md).
 [[kv_namespaces]]
 binding = "RATE_LIMIT_KV"
-id = "REPLACE_WITH_REAL_KV_NAMESPACE_ID"
+id = "5b00777a919b452a9e71c11eda67b777"
 
 # Native Rate Limiting binding — fast first-line flood guard on /auth/*, ahead of
 # the precise KV-based login rule (see middleware/nativeRateLimit.ts). Unlike the
@@ -30,7 +28,7 @@ name = "ml-trading-ops-api"
 
 [[env.production.kv_namespaces]]
 binding = "RATE_LIMIT_KV"
-id = "REPLACE_WITH_REAL_KV_NAMESPACE_ID"
+id = "5b00777a919b452a9e71c11eda67b777"
 
 [[env.production.ratelimits]]
 name = "AUTH_RATE_LIMITER"
