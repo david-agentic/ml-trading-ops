@@ -163,6 +163,10 @@ Seven roles. All permissions **enforced on the backend** (never frontend-only).
 
 Permissions model: **Role-Based Access Control with per-permission overrides** (RBAC + fine-grained flags). Each user has a role + optional permission overrides map. Backend middleware checks `user.permissions.canDo(action, resource)` on every protected endpoint.
 
+**Implementation shape (Phase 1, owner-approved):** a `permissions` table holds each role's default grants as (resource, action) pairs; a `user_permissions` table holds per-user overrides as (resource, action, granted) rows, where `granted` may be `true` (explicit grant beyond the role default) or `false` (explicit deny, even if the role would otherwise allow it). An override always wins over the role default. `resource`/`action` are plain text columns, not fixed Postgres enums, so later phases can introduce new resources without a migration.
+
+**Users list pagination:** `GET /users` is unpaginated in Phase 1 (Super Admin only, small user count). Server-side pagination is added when the Admin Portal's broader list-page pattern is built in Phase 4.
+
 ---
 
 ## 6. Portals & Modules
@@ -371,9 +375,12 @@ Audit log is **append-only**. No delete endpoint. Search, filter, and export in 
 ### Authentication
 - Email + password login
 - Passwords hashed with **bcrypt** (cost factor 12) or Argon2id
+- **Password rule (Phase 1, owner-approved):** minimum 10 characters, at least one letter and one digit. No forced composition rules beyond that (NIST 800-63B favors length over composition complexity).
+- **Chosen for Phase 1:** Argon2id via `hash-wasm` (bcrypt's native bindings don't work in the Workers V8 isolate runtime). Parameters are tuned to fit the Workers Free plan's 10ms CPU budget — see the `SECURITY-TODO` comment in `packages/shared/src/crypto/password.ts` and `docs/phases/phase-01-report.md` for the exact values and the measurement caveat.
 - **JWT sessions** (short-lived access token 15min + refresh token 7 days, rotated on refresh)
 - Refresh tokens stored **hashed** in DB, with device/session tracking
 - Password reset flow: email a signed one-time token (15-min expiry), single use
+- **Self-service password change** (`POST /auth/change-password`, authenticated) is part of the standard auth surface alongside the reset flow — required by the Admin/Reseller "My Profile: change password" deliverable.
 - **Rate limiting** on login (5 attempts / 15 min per IP + per email; lockout after)
 - Login history recorded (last 20 sessions per user, visible to Super Admin)
 - **2FA (TOTP)** — build the schema and flow, disable by default. Enable in Phase 10.
