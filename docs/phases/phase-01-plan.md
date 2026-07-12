@@ -76,6 +76,11 @@ Two architectural questions came up that CLAUDE.md didn't anticipate (technology
 - No custom domain/DNS needed in Phase 1 — free `*.workers.dev` domain is sufficient; custom domain (likely `.co.uk`) is a post-Phase-1 decision for the owner
 - R2, PrintNode, Stripe, QBO, Sentry — out of scope, per CLAUDE.md's own phase-gated credential checklist
 
+## Deviations from plan (discovered mid-build)
+
+- **KV namespace requirement.** The login rate limiter (Stage D step 12) needs a Cloudflare Workers KV namespace. This was not in the original "Manual owner steps" checklist above — it only surfaced once the rate-limit middleware was actually being built. Unlike the Rate Limiting binding below, a KV namespace is a real Cloudflare resource that must be created once via the dashboard (Workers & Pages → KV → Create a namespace) before its ID can be put in `wrangler.toml`.
+- **Native Rate Limiting binding dropped, then re-added.** This plan's "Decisions locked for this phase" section above always specified two rate-limiting layers: Cloudflare's native Rate Limiting binding (fast first-line flood guard) plus Workers KV (precise 5/15min per IP+email rule). During Stage D, only the KV layer was actually implemented — the native binding was silently dropped and not flagged to the owner. Caught during an owner-requested deviation audit and fixed: `wrangler.toml` now has an `AUTH_RATE_LIMITER` binding (30 requests/10s per IP, chosen over the binding's other supported window of 60s for faster recovery after a burst), mounted as `authFloodGuard` middleware ahead of the KV-based rule on all of `/auth/*`. Unlike the KV namespace above, this binding's `namespace_id` is a locally-chosen arbitrary identifier, not a Cloudflare-provisioned resource — no owner dashboard action was needed to add it.
+
 ## Verification (Phase 1 done-gate, per CLAUDE.md §19 + owner's explicit checklist)
 
 - Live at the production URL (a free `*.workers.dev` URL for Phase 1 — see Production URL decision above; CLAUDE.md updated to match once confirmed), on both desktop Chrome and mobile Safari
