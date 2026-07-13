@@ -1,0 +1,7 @@
+{
+  "name": "@next/swc-win32-x64-msvc",
+  "version": "14.2.33",
+  "main": "index.js",
+  "os": ["win32"],
+  "cpu": ["x64"]
+}

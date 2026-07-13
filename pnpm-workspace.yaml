@@ -3,3 +3,8 @@ packages:
   - "packages/*"
 allowBuilds:
   esbuild: true
+  unrs-resolver: true
+overrides:
+  # See tools/local-stubs/README.md. Targets one exact package name only —
+  # inert on CI (Linux resolves @next/swc-linux-x64-gnu instead).
+  "@next/swc-win32-x64-msvc": "link:./tools/local-stubs/next-swc-win32-x64-msvc"
