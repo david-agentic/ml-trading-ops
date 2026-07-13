@@ -1,69 +1,48 @@
 # Phase 1, Stage E — Unattended Prep Session Progress Report
 
-**Session:** unattended prep work while owner offline, per explicit instructions.
-**Current commit on `phase-1/foundation`:** `b288736` (brand assets README) — local only, **not pushed**. Last pushed commit remains `30b033b` (Task C).
+**Session:** unattended prep work while owner offline, followed by a supervised follow-up session on return.
+**Current commit on `phase-1/foundation`:** see git log — this report and the brand assets README are committed locally; push status noted in §4.
 
 ---
 
-## 0. A boundary contradiction I resolved without you — please confirm
+## 0. Boundary contradiction from the unattended session — resolved, confirmed correct by owner
 
-Your instructions contained a direct contradiction: the **CRITICAL BOUNDARIES** section said *"Do NOT push anything to origin. All work stays local"*, but step 1 and step 2(h) explicitly said to push Task C and the E1 work, and your closing paragraph described wanting to visit live URLs on your return — only possible if something was pushed.
-
-**What I did:** treated the explicit, detailed steps as authoritative (push Task C; push E1 once fully green), and read the CRITICAL BOUNDARY as "don't push anything beyond what's explicitly listed" rather than "don't push at all." I pushed Task C (`30b033b`) on that basis. E1 never reached a green state, so nothing else was pushed — the boundary question ended up moot for E1, but **please tell me if my reading of your intent was wrong**, since the same ambiguity will recur if you give similar instructions again.
+The unattended-session instructions contained a direct contradiction: "Do NOT push anything to origin" vs. explicit steps to push Task C and E1. I read the detailed steps as authoritative and pushed only what they specified. **Owner confirmed on return this was the right call.**
 
 ---
 
-## 1. Most important thing to know: local dev environment is currently broken, unrelated to Stage E itself
+## 1. Task 1 (owner-directed, on return): clean reinstall — SUCCEEDED, corruption fixed
 
-While investigating why the E1 install failure happened, I found that `packages/db/node_modules/drizzle-orm` **does not exist**, even though `drizzle-orm` is a direct dependency in `packages/db/package.json`. Confirmed directly (not just `ls` — Node's own `require.resolve` fails to find `drizzle-orm/pg-core` from `packages/db`).
+Removed `node_modules` (root + `apps/api`, `packages/db`, `packages/shared`; `apps/web` and `packages/ui` had none), kept `pnpm-lock.yaml` untouched, ran `pnpm install` from the root.
 
-**Why this matters more than it looks:** this made `pnpm typecheck` fail for `@ml-trading-ops/db` with `Cannot find module 'drizzle-orm/pg-core'` and similar errors across every schema file. But — critically — **every prior "all green" verification this session for `packages/db` was actually a Turborepo cache hit, not a fresh run** (visible in the earlier logs as `@ml-trading-ops/db:typecheck: cache hit, replaying logs ...` and the same for `test`). Turbo's cache key doesn't account for `node_modules` link-layer integrity, only source files and the lockfile — so it kept confidently replaying old passing results even while this local corruption existed underneath. I don't know how long this has been true; it surfaced now because the failed `apps/web` install triggered pnpm's dependency-status check, which forced a real (non-cached) pass.
+- **Result:** succeeded in 11.6s. All 214 packages were reused from the local `.pnpm` store (zero downloads) — confirms the earlier `drizzle-orm` issue was purely a broken symlink from an interrupted install, not a lockfile or registry problem.
+- **Verification:** `pnpm turbo run typecheck lint test --force` (cache bypassed, so every task genuinely re-executed rather than replaying a cached result) — **9/9 tasks passed**, 0 cached, 45 tests total (16 shared + 2 db + 27 api). `packages/db/node_modules/drizzle-orm` confirmed present and resolvable.
+- **Conclusion:** the local dev environment is now genuinely verified green, not resting on a stale Turbo cache as it may have been before.
 
-**What I checked, to size the actual risk:**
-- `pnpm-lock.yaml` is **unmodified** (`git diff` on it is empty) — this is not a lockfile/dependency-declaration problem.
-- The actual `drizzle-orm@0.38.4` packages **are** present in the central `.pnpm` store (`node_modules/.pnpm/drizzle-orm@0.38.4_@neondat_...` etc.) — just not symlinked into `packages/db/node_modules`.
-- CI (GitHub Actions) does a fresh `pnpm install --frozen-lockfile` on a clean runner every run, and every deploy so far has succeeded — so **this is very likely local-machine-only corruption** from the interrupted install(s), not a real problem with the dependency tree itself. Production/preview deploys should be unaffected.
+## 2. Task 2 (owner-directed): retry Next.js install — FAILED again, same root cause
 
-**What I did to try to fix it, and why I stopped:** ran `pnpm install` (no-op, "already up to date" in under a second) and `pnpm install --force` (same no-op result) — both suggest pnpm's own state-tracking file is stale and doesn't realize node_modules is actually broken. I did not go further (e.g., deleting `node_modules` and reinstalling from scratch), because that would need to re-fetch the *entire* dependency tree over the same network that just failed on one package — risking turning a contained, one-package problem into a total local-dev outage. This is exactly the kind of judgment call your rule 4 ("if any step fails, stop, don't retry blindly, wait for me") is for.
+Re-added the Next.js/React/eslint-config-next/Vitest dependencies to `apps/web/package.json` and ran `pnpm install` again.
 
-**Bottom line:** your local `pnpm typecheck`/`lint`/`test` commands may currently report failures for `packages/db` (and possibly `apps/api`, which depends on it) that have nothing to do with any code — it's a node_modules linking problem. When you're back, the likely fix is a full clean reinstall (`rm -rf node_modules && pnpm install`) attempted when network conditions are better, ideally not the first thing tried unattended.
+- **What happened:** resolved cleanly (only 1 new package needed a real download — everything else reused from cache), then stalled on `@next/swc-win32-x64-msvc` for several minutes with no output, eventually surfaced the same retry sequence as the first failure ("Will retry in 10 seconds... Will retry in 1 minute... 1 retries left"), then went silent again rather than erroring cleanly. The underlying `node.exe` process was still alive and consuming ~477MB after ~15+ minutes with zero progress — a genuine hang, not just a slow-but-working download. I terminated the process directly (`taskkill`) rather than continue waiting indefinitely.
+- **Per Task 2(e):** reverted `apps/web/package.json` back to the stub (matching the pattern from the earlier unattended session).
+- **Side effect of the forceful kill:** `taskkill /F` on the hung `node.exe` reintroduced the exact same `drizzle-orm` symlink corruption from §1 — a hard kill mid-link is exactly the kind of interruption that caused it the first time. Confirmed and fixed the same way: `rm -rf node_modules` (root + `apps/api`/`packages/db`/`packages/shared`) + `pnpm install` — 7.3s, all 214 packages reused from cache, zero downloads.
+- **Conclusion:** this is the same `@next/swc-win32-x64-msvc` binary that failed in the unattended session, now confirmed twice, the second time as a genuine multi-minute hang (not a clean fast error) that needed manual termination. This isn't a transient blip — recommend the CI-only fallback discussed in the owner's Task 2(e): CI (GitHub Actions, Linux runner) does the Next.js/OpenNext build and deploy, matching the existing pattern already used for `wrangler` in `apps/api`. Local `next dev` won't work on this machine until the underlying network issue is solved — doesn't block Stage E's CI-driven deploy path, but worth a decision on whether it's worth pursuing for iterative local UI work.
 
----
+## 3. Final verification — GREEN
 
-## 2. What was completed
+After both repair cycles, ran `pnpm turbo run typecheck lint test --force` (cache bypassed) one more time: **9/9 tasks passed, 0 cached, 45 tests, all fresh.** Includes the Argon2id CPU-budget spike test in `packages/shared`, which had failed once mid-session (63.9ms vs. a 15ms threshold) — almost certainly a load-related flake from the concurrent install/hang activity at that moment, since it passed cleanly on immediate rerun (11.04ms) with no code changes. Not treating it as a real regression; flagging in case it recurs under normal conditions.
 
-- **Task C pushed and verified** (`30b033b`). The `Deploy` workflow re-ran automatically, completed successfully, `/health` re-confirmed 200 on the API preview URL.
-- **Brand asset groundwork committed locally** (`b288736`, not pushed): `apps/web/public/brand/README.md` documents the expected files (`logo-dark.svg`, `logo-light.svg`, `icon-1024.png`), the icon-vs-full-lockup distinction, and the PWA icon sizes to be derived once you supply a source PNG. No placeholder assets generated.
-- This report.
+## 4. Current repo state
 
-## 3. What was blocked — sub-task E1 (Next.js scaffold)
+- `apps/web/package.json`: reverted to the stub (no dependencies) — matches its last-committed state, no diff.
+- `apps/web/app/*.tsx`, `next.config.mjs`, `.eslintrc.json`, `next-env.d.ts`: still present, uncommitted, harmless (inert without `package.json` declaring Next.js as a dependency). Preserved for reuse once the CI-only path is designed.
+- `apps/web/public/brand/README.md`: committed.
+- This progress report: committed and pushed, along with the brand assets README, to `origin/phase-1/foundation`.
+- No E1 application code was pushed — Next.js never successfully installed, so there's nothing beyond docs to publish this session.
 
-**What I wrote (uncommitted, still in the working tree, not pushed):**
-- `apps/web/next.config.mjs` — empty/default config
-- `apps/web/app/layout.tsx` — minimal root layout (just `<html><body>`, no styling/fonts — structurally required by Next.js App Router, not a design decision)
-- `apps/web/app/page.tsx` — placeholder text `"MLT Ops"`, no styling
-- `apps/web/app/_health/page.tsx` — placeholder text `"MLT Ops Web"`, per your spec
-- `apps/web/next-env.d.ts` — standard Next.js boilerplate
-- `apps/web/.eslintrc.json` — extends `next/core-web-vitals`, adds `browser` env
+## 5. What needs owner attention
 
-**What I reverted:** `apps/web/package.json` — originally added Next.js 14, React 18, `eslint-config-next`, Vitest, etc., but reverted this back to the committed stub. Reason below.
-
-**What failed:** `pnpm install` for the new `apps/web` dependencies repeatedly timed out (3 retries, per the existing `.npmrc` retry config) trying to download `@next/swc-win32-x64-msvc` — Next.js's native Windows binary — and aborted. Same category of problem as the `wrangler`/`workerd` download failure documented earlier in `apps/api/vitest.config.ts`.
-
-**Why I reverted `package.json` specifically:** the failed install didn't just fail in isolation — because `pnpm`/Turborepo run an automatic dependency-sync check before any script, the unresolved new dependencies in `apps/web/package.json` blocked `pnpm typecheck`/`lint`/`test` for **the entire workspace**, not just `apps/web` (verified: `pnpm --filter @ml-trading-ops/api typecheck` also failed at the same pre-check). Reverting `package.json` alone removed the trigger and let the rest of the workspace's tooling run again (which is what surfaced the unrelated `drizzle-orm` issue in §1). The other scaffold files are harmless left in place — they're inert without `package.json` declaring their dependencies.
-
-**Consequence:** steps 2(b)–2(h) (Tailwind, shadcn/ui, OpenNext adapter, `wrangler.toml` for web, the "Deploy Web" GitHub Actions job) were never attempted — all depend on a working Next.js install.
-
-## 4. Decisions I made (all small/reversible, per CLAUDE.md's own protocol)
-
-- `next/core-web-vitals` + `eslint-config-next` for `apps/web`'s lint config — standard pairing, matches CLAUDE.md Rule 13.
-- Kept `app/layout.tsx`/`app/page.tsx` maximally bare (no Tailwind, no fonts, no color) since Tailwind setup (E1b) was never reached.
-- Reverted `apps/web/package.json` rather than leaving the workspace blocked — judgment call, explained in §3.
-
-## 5. What needs your attention, in priority order
-
-1. **§1 — the `packages/db`/`drizzle-orm` local node_modules corruption.** Most important item. Likely needs a full clean reinstall when you're back; production/CI appear unaffected.
-2. **§0 — the boundary contradiction** — confirm my reading was right, or correct it for next time.
-3. **The underlying network problem** — this is now the second large native binary download to fail on this network (`workerd`, then `next`'s `swc-win32-x64-msvc`). Worth deciding on a strategy: retry later, use a different network, or lean further into "native-binary-heavy installs happen in CI only" (already our pattern for `wrangler`).
-4. **E1 is not done** — no live web URL exists yet. The scaffold files that don't depend on `package.json` are still in the working tree; once the install problem is resolved, E1 can resume from there rather than starting over.
-5. Your 5 original Stage E sign-off questions (shadcn component list, dark-mode approach, PWA library reconfirmation, real logo source file, sidebar build approach) are still open — untouched by this session.
+1. **Design the CI-only build/deploy path for `apps/web`** together, rather than attempting local Next.js installs again on this network — same pattern as `wrangler`/`apps/api`. This is the recommended way to unblock E1's remaining sub-steps (Tailwind, shadcn/ui, OpenNext, `deploy.yml`'s "Deploy Web" job) without depending on a local install that has now failed twice.
+2. **Local `next dev` won't work on this machine** until the `@next/swc-win32-x64-msvc` download problem is solved (different network, a registry mirror, or similar) — worth a decision on whether that's worth pursuing given CI can otherwise cover build/deploy/verification.
+3. **Your 5 original Stage E sign-off questions** (shadcn component list, dark-mode approach, PWA library reconfirmation, real logo source file, sidebar build approach) are still open.
+4. E1 is not done — no live web URL exists yet.
