@@ -19,7 +19,7 @@ Deploy an empty shell first — proves the OpenNext→Workers pipeline end-to-en
 → *PWA interleave point:* this is the earliest safe point to add the static `manifest.json` + a placeholder icon set (low-risk, no dependency on later pages existing) — see open item on brand assets below.
 
 **E4. Tailwind CSS + typography setup**
-Navy `#0B2545` primary + semantic success/warning/danger/info palette, Inter font, per CLAUDE.md §15. Dark-mode CSS variable strategy set up here (implementation approach is a sign-off item below).
+Full brand/neutral/semantic color palette per the locked CLAUDE.md §15 "Color palette" (not duplicated here — that section is the source of truth), Inter font. Dark-mode CSS variable strategy set up here (implementation approach is a sign-off item below).
 
 **E5. shadcn/ui installation**
 Initial component primitives installed (exact list is a sign-off item below).
