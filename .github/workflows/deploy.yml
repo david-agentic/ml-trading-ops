@@ -63,3 +63,39 @@ jobs:
       - name: Deploy
         working-directory: apps/api
         run: npx wrangler@^3 deploy ${{ steps.env.outputs.wrangler_env_flag }}
+
+  deploy-web:
+    name: Deploy Web
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Determine environment
+        id: env
+        run: |
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            echo "wrangler_env_flag=--env production" >> "$GITHUB_OUTPUT"
+          else
+            echo "wrangler_env_flag=" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build
+        working-directory: apps/web
+        run: pnpm run cf:build
+
+      - name: Deploy
+        working-directory: apps/web
+        run: npx wrangler@^3 deploy ${{ steps.env.outputs.wrangler_env_flag }}
