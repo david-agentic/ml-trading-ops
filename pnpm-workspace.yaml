@@ -4,7 +4,24 @@ packages:
 allowBuilds:
   esbuild: true
   unrs-resolver: true
+  # Both denied deliberately, not just unreviewed: sharp's postinstall would
+  # fetch its own platform-specific native binary (same risk class as the two
+  # packages already stubbed above — we don't use sharp's native image work
+  # anyway, see apps/web/README.md / Stage E decisions). workerd's postinstall
+  # would try to prepare @cloudflare/workerd-windows-64, which is our stub —
+  # denying its build script skips that rather than letting it choke on fake
+  # content. Neither package's JS itself is needed to function locally.
+  sharp: false
+  workerd: false
+# @opennextjs/cloudflare pins its own @opennextjs/aws dependency via a
+# pkg.pr.new URL (a well-known PR-preview package host) rather than a normal
+# registry version — this is how the official package ships for everyone,
+# not something specific to this install. pnpm's default supply-chain check
+# blocks any non-registry-resolved subdependency; allowing it here since it's
+# a required, upstream-controlled pin, not something we're introducing.
+blockExoticSubdeps: false
 overrides:
-  # See tools/local-stubs/README.md. Targets one exact package name only —
-  # inert on CI (Linux resolves @next/swc-linux-x64-gnu instead).
+  # See tools/local-stubs/README.md. Both target one exact package name only —
+  # inert on CI (Linux resolves the -linux-64/-linux-x64-gnu variants instead).
   "@next/swc-win32-x64-msvc": "link:./tools/local-stubs/next-swc-win32-x64-msvc"
+  "@cloudflare/workerd-windows-64": "link:./tools/local-stubs/cloudflare-workerd-windows-64"

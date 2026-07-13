@@ -1,0 +1,30 @@
+# Top-level name is the preview deploy target (pushes to phase-1/foundation).
+# `wrangler deploy --env production` (main branch only) deploys as the real name.
+# Mirrors apps/api/wrangler.toml's naming convention (see CLAUDE.md §17).
+name = "ml-trading-ops-web-preview"
+main = ".open-next/worker.js"
+compatibility_date = "2024-11-01"
+compatibility_flags = ["nodejs_compat"]
+
+[observability]
+enabled = true
+
+[assets]
+directory = ".open-next/assets"
+binding = "ASSETS"
+
+# Workers Service Binding — same-origin /api/* access, per the locked decision
+# in phase-01-plan.md (in-process Worker-to-Worker call, zero CORS in
+# production). Not yet called from any route (nothing needs the API until
+# E7/E8) — this just wires the capability in ahead of time so E3's canary
+# deploy already has it.
+[[services]]
+binding = "API"
+service = "ml-trading-ops-api-preview"
+
+[env.production]
+name = "ml-trading-ops-web"
+
+[[env.production.services]]
+binding = "API"
+service = "ml-trading-ops-api"

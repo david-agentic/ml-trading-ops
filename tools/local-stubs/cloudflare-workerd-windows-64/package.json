@@ -1,0 +1,7 @@
+{
+  "name": "@cloudflare/workerd-windows-64",
+  "version": "1.20260708.1",
+  "main": "index.js",
+  "os": ["win32"],
+  "cpu": ["x64"]
+}
