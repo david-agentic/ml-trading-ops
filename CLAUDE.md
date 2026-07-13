@@ -426,11 +426,35 @@ Audit log is **append-only**. No delete endpoint. Search, filter, and export in 
 - Confirmations for destructive/irreversible actions (dialog with typed confirmation for high-risk actions)
 
 ### Color palette
-- **Primary:** ML Trading navy `#0B2545` (from logo background)
-- **Accent:** subtle blue-gray for secondary actions
-- **Success:** `#16A34A` · **Warning:** `#F59E0B` · **Danger:** `#DC2626` · **Info:** `#2563EB`
-- **Neutral text:** `#0F172A` on `#FFFFFF` background (light mode)
+
+**Brand**
+- Primary navy: `#3A4551` (matches logo dark)
+- Primary hover: `#2E3A47`
+- Primary muted: `#F1F3F5`
+- Accent grey: `#8B939C` (matches logo secondary)
+
+**Neutrals — light mode**
+- Text primary: `#0F172A`
+- Text secondary: `#64748B`
+- Border: `#E2E8F0`
+- Background: `#FFFFFF`
+- Surface: `#F8FAFC`
+- Muted: `#F1F5F9`
+
+**Neutrals — dark mode**
+- Text primary: `#F1F5F9`
+- Text secondary: `#94A3B8`
+- Border: `#334155`
+- Background: `#0F172A`
+- Surface: `#1E293B`
+- Muted: `#334155`
+
+**Semantic status**
+- Success: `#16A34A` · Warning: `#F59E0B` · Danger: `#DC2626` · Info: `#2563EB`
+
 - **Dark mode** supported end-to-end from day 1
+
+Design system primary color follows the logo. Any future logo revision requires a coordinated update to this section.
 
 ### Typography
 - **Inter** as the primary font (system font stack fallback)
