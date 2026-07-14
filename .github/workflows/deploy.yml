@@ -49,6 +49,14 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: pnpm db:migrate
 
+      - name: Seed database (roles, permissions, Super Admin)
+        working-directory: packages/db
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        # Idempotent: seedRoles/seedPermissions upsert, seedSuperAdmin skips if
+        # the Super Admin user already exists. Safe to run on every deploy.
+        run: pnpm db:seed
+
       - name: Set Workers secrets
         working-directory: apps/api
         env:
