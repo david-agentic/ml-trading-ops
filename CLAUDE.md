@@ -660,4 +660,45 @@ Stored as Cloudflare secrets, never in repo. Names only shown here.
 
 ---
 
+## 23. Long-term Product Roadmap (Post-Phase-10)
+
+After Phase 10 ships and ML Trading is running stably on MLT Ops, the roadmap continues in stages toward a broader B2B distribution platform with integrated financial reporting. Each stage produces something shippable.
+
+### Phase 11 — Financial reporting
+Report on operational data already captured:
+- P&L (sales, cost of goods, gross profit, operating profit)
+- Receivables balance (money customers owe)
+- Payables balance (once supplier module exists)
+- Cash summary (in vs out by month)
+- Not full accounting — pure reporting on ops data. Low risk, high value.
+
+### Phase 12 — Automated invoicing
+- Auto-generate customer invoices on order dispatch
+- Email invoices via existing email pipeline
+- Track paid / partial / overdue states
+- Match incoming payments to invoices (reuse Finance portal patterns)
+
+### Phase 13-14 — Accounting-lite
+- Simplified chart of accounts (~30 default accounts)
+- Journal entries auto-created from operational events
+- Bank feed matching (Plaid or similar)
+- VAT tracking (not filing — just tracking)
+- Simple financial statements
+- Export to QBO/Xero for accountant year-end work
+- Positioned as "financial tracking" not "accounting software" to manage compliance liability
+
+### Phase 15+ — Multi-tenant SaaS conversion
+- Only after accounting-lite is stable and used in production for 3 months
+- Add tenant_id to schema, tenant-scoped queries, per-tenant branding
+- Onboard second and third customers
+- Target market: UK B2B distributors with reseller networks (wholesale food, industrial supplies, cosmetics, coffee, textiles, etc.) — the workflow pattern generalizes broadly
+
+### Design principles this roadmap implies for Phase 2-10
+- Never require users to re-enter data that already exists elsewhere in the system
+- Emit domain events for operationally significant actions (order.submitted, payment.verified, order.dispatched, order.completed) — accounting modules will subscribe to these later
+- Keep product and order snapshots immutable once written (historical accounting integrity)
+- Design schema to allow tenant_id addition later without table restructures
+
+---
+
 *End of CLAUDE.md — this document is the single source of truth. Any conflict between this file and other instructions is resolved in this file's favor unless the owner explicitly updates it.*
