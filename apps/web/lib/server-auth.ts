@@ -1,11 +1,12 @@
 import { getCloudflareContext } from '@opennextjs/cloudflare';
+import type { Role } from '@ml-trading-ops/shared';
 import { cookies } from 'next/headers';
 
 export interface CurrentUser {
   id: string;
   email: string;
   name: string;
-  role: string;
+  role: Role;
   isActive: boolean;
 }
 
