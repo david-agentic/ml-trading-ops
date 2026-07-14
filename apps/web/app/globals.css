@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Palette locked in CLAUDE.md §15 (commit 6f654b8), source of truth — do not
+ * edit values here without updating that section too. Plain hex custom
+ * properties rather than shadcn/ui's usual HSL triplets: simpler to keep in
+ * sync with the hex values CLAUDE.md actually specifies, at the cost of not
+ * supporting shadcn's `bg-primary/50`-style opacity modifiers. Nothing in
+ * Phase 1 needs those.
+ */
+@layer base {
+  :root {
+    --background: #ffffff;
+    --foreground: #0f172a;
+    --card: #f8fafc;
+    --card-foreground: #0f172a;
+    --popover: #ffffff;
+    --popover-foreground: #0f172a;
+    --primary: #3a4551;
+    --primary-hover: #2e3a47;
+    --primary-foreground: #ffffff;
+    --secondary: #f1f3f5;
+    --secondary-foreground: #3a4551;
+    --muted: #f1f5f9;
+    --muted-foreground: #64748b;
+    --accent: #8b939c;
+    --accent-foreground: #ffffff;
+    --destructive: #dc2626;
+    --destructive-foreground: #ffffff;
+    --success: #16a34a;
+    --warning: #f59e0b;
+    --info: #2563eb;
+    --border: #e2e8f0;
+    --input: #e2e8f0;
+    --ring: #3a4551;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: #0f172a;
+    --foreground: #f1f5f9;
+    --card: #1e293b;
+    --card-foreground: #f1f5f9;
+    --popover: #0f172a;
+    --popover-foreground: #f1f5f9;
+    --primary: #3a4551;
+    --primary-hover: #2e3a47;
+    --primary-foreground: #ffffff;
+    --secondary: #334155;
+    --secondary-foreground: #f1f5f9;
+    --muted: #334155;
+    --muted-foreground: #94a3b8;
+    --accent: #8b939c;
+    --accent-foreground: #0f172a;
+    --destructive: #dc2626;
+    --destructive-foreground: #ffffff;
+    --success: #16a34a;
+    --warning: #f59e0b;
+    --info: #2563eb;
+    --border: #334155;
+    --input: #334155;
+    --ring: #8b939c;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
