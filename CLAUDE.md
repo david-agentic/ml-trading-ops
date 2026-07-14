@@ -404,126 +404,414 @@ Audit log is **append-only**. No delete endpoint. Search, filter, and export in 
 
 ---
 
-## 15. UI / UX Standards
+## 15. Design System (Locked, applies to every page)
 
-### Design language
-- **Benchmarks:** QuickBooks Online · Xero · Shopify Admin · ShipStation · Linear
-- Clean, professional, business-grade
-- **Not** flashy, gamified, or AI-dashboard-looking
+This section is the single source of truth for visual design across MLT Ops. Every page, every component, every state must follow these rules. Deviations require explicit owner approval and a CLAUDE.md update.
 
-### Layout
-- Left sidebar navigation (collapsible on mobile)
-- Top bar: business logo, portal switcher (for users with multi-portal access), user menu, notifications bell
-- Main content area with breadcrumbs
-- Consistent page structure: title + action bar + filters + content + pagination
+### 15.1 Design philosophy
 
-### Components
-- Tables: sticky headers, sticky action column on wide tables, responsive card layout on mobile
-- Filter bar: chips + dropdowns + search, "Clear all" link
-- Summary cards / KPI chips at top of list pages
-- Status badges with consistent colors (see palette below)
-- Actions menu (kebab / three-dot) for row-level actions — not multiple buttons per row
-- Confirmations for destructive/irreversible actions (dialog with typed confirmation for high-risk actions)
+**Aesthetic:** Precise, industrial, premium. Trustworthy without being cold. Modern without being trendy. Serious without being boring.
 
-### Color palette
+**Benchmarks (references, not templates to copy):** Stripe Dashboard, Linear, Vercel, Shopify Admin, Notion. Study them for restraint, hierarchy, and refinement — not for direct visual copying.
 
-**Brand**
-- Primary navy: `#3A4551` (matches logo dark)
-- Primary hover: `#2E3A47`
-- Primary muted: `#F1F3F5`
-- Accent grey: `#8B939C` (matches logo secondary)
+**Anti-patterns to avoid at all times:**
+- Cartoony status pills (bright candy colors, huge rounded rectangles)
+- Generic Bootstrap-era shadows (blur too high, opacity too heavy)
+- AI-generated hero illustrations (fake people, generic isometric shapes)
+- Overuse of gradients (one hero gradient per page maximum)
+- Emojis in UI (unless a user explicitly typed one)
+- Bouncy animations or elastic transitions
+- Multiple accent colors (one accent only, everywhere)
+- Flat single-color backgrounds without depth or texture
 
-**Neutrals — light mode**
-- Text primary: `#0F172A`
-- Text secondary: `#64748B`
-- Border: `#E2E8F0`
-- Background: `#FFFFFF`
-- Surface: `#F8FAFC`
-- Muted: `#F1F5F9`
+### 15.2 Color system
 
-**Neutrals — dark mode**
-- Text primary: `#F1F5F9`
-- Text secondary: `#94A3B8`
-- Border: `#334155`
-- Background: `#0F172A`
-- Surface: `#1E293B`
-- Muted: `#334155`
+All colors defined as CSS custom properties (design tokens). Component code must reference tokens, never hex values directly.
 
-**Semantic status**
-- Success: `#16A34A` · Warning: `#F59E0B` · Danger: `#DC2626` · Info: `#2563EB`
+**Brand core:**
+```
+--brand-navy-950:   #0A1628   /* Deepest navy — auth left panel, sidebar */
+--brand-navy-900:   #101E36   /* Deep navy — hover states on dark surfaces */
+--brand-navy-800:   #152845   /* Elevated dark — top of dark gradients */
+--brand-navy-700:   #1E3357   /* Mid dark — dark mode card surfaces */
+--brand-navy-500:   #3A4551   /* Original locked navy — kept for continuity */
+```
 
-- **Dark mode** supported end-to-end from day 1
+**Brand accent (single accent color, used everywhere for CTAs, links, focus):**
+```
+--accent-500:       #3E7BFA   /* Primary — CTA buttons, links, focus rings */
+--accent-600:       #2563EB   /* Hover state on primary CTAs */
+--accent-400:       #6996FB   /* Muted uses on dark backgrounds */
+--accent-50:        #EEF3FF   /* Very light — subtle accent backgrounds */
+```
 
-Design system primary color follows the logo. Any future logo revision requires a coordinated update to this section.
+**Surface colors:**
+```
+--surface-canvas:   #FAFBFC   /* Warm off-white — main background, NEVER pure white */
+--surface-card:     #FFFFFF   /* Pure white — cards, elevated surfaces */
+--surface-muted:    #F1F5F9   /* Very light slate — inset backgrounds, disabled */
+--surface-hover:    #F8FAFC   /* Row hover in tables */
+```
 
-### Typography
-- **Inter** as the primary font (system font stack fallback)
-- Sizes: 12/14/16/20/24/32 px scale, generous line-height
+**Text (light mode):**
+```
+--text-primary:     #0A1628   /* Headings, body text */
+--text-secondary:   #5A6478   /* Labels, helper text, meta */
+--text-tertiary:    #94A3B8   /* Disabled, timestamps, low emphasis */
+--text-inverse:     #FFFFFF   /* Text on dark surfaces */
+```
 
-### Brand assets
-- Logo files live in `apps/web/public/brand/`
-- `logo-dark.svg` (for light backgrounds — dark navy text version) — needs to be produced from the source PNG
-- `logo-light.svg` (original white-on-navy for dark backgrounds)
-- `icon-1024.png` (favicon, PWA icon)
-- Login screen uses full logo on a subtle brand gradient
+**Text (dark mode):**
+```
+--text-primary-dark:    #F1F5F9
+--text-secondary-dark:  #94A3B8
+--text-tertiary-dark:   #64748B
+```
 
-### States
-- Loading skeletons (not spinners) for lists and cards
-- Empty states with illustration + helpful action
-- Error states with plain-English messages: "What went wrong. What to do next."
-- Success toasts, dismissible
+**Borders:**
+```
+--border-subtle:    #F1F5F9   /* Card internal dividers, barely visible */
+--border-default:   #E5E7EB   /* Input fields, standard dividers */
+--border-strong:    #CBD5E1   /* Emphasized borders, table headers */
+--border-dark:      #2A3B57   /* Dark mode borders */
+```
 
-### Mobile
-- All portals mobile-responsive
-- Reseller portal is **mobile-first PWA**
-- Shipping portal usable on a warehouse tablet
+**Semantic colors (business status — refined, not cartoony):**
+```
+--success-500:      #10B981   /* Emerald, finance-appropriate */
+--success-100:      #D1FAE5   /* Badge background */
+--success-700:      #047857   /* Badge text */
 
-### Accessibility
-- WCAG AA color contrast
-- Keyboard navigation on all interactive elements
-- Focus rings visible
-- Semantic HTML + ARIA where needed
+--warning-500:      #F59E0B   /* Amber */
+--warning-100:      #FEF3C7
+--warning-700:      #B45309
 
----
+--danger-500:       #EF4444   /* Red */
+--danger-100:       #FEE2E2
+--danger-700:       #B91C1C
 
-### 15.1 Mobile-First & PWA Standards
+--info-500:         #3E7BFA   /* Same as accent — info = brand accent */
+--info-100:         #DBEAFE
+--info-700:         #1E40AF
+```
 
-The system is delivered as ONE Progressive Web App at ml-trading-ops.pages.dev covering all four portals. Users install once; after login they land in the portal(s) their role grants them. Super Admin can switch portals via a top-bar switcher.
+### 15.3 Typography
 
-Design principle per portal:
+**Font family:** Inter (400, 500, 600, 700 weights), loaded via `next/font` with `display: swap`. Numeric variant `tabular-nums` on all money/date/count displays.
 
-- Reseller portal: MOBILE-FIRST. Design phone-first, then progressively enhance for desktop. Style benchmark: Shopify-style storefront browsing — clean product cards, image-forward, cart drawer, sticky action buttons. Simplicity over cleverness. The target user is a non-technical person placing orders quickly on their phone. No complex interactions, no hidden gestures beyond standard tap and swipe-to-close-sheet.
-- Shipping portal: MOBILE-FIRST for warehouse staff on phones/tablets. Big touch targets (min 44px), one-tap primary actions, bottom action sheets for tracking entry, scrollable card queues. Desktop view for shipping managers gives denser table layouts.
-- Finance portal: ADAPTIVE. Approval queue works as swipeable/tappable cards on mobile with one-tap approve/hold and full-screen payment proof viewer. Desktop shows side-by-side proof + form layouts for deeper review sessions.
-- Admin portal: DESKTOP-FIRST but fully mobile-capable. Dense tables and multi-column dashboards on desktop; on mobile, tables collapse to cards, dashboards stack, actions move into bottom sheets.
+**Scale:**
+```
+--text-display:     32px / weight 700 / letter-spacing -0.03em / line-height 1.1
+--text-h1:          28px / weight 600 / letter-spacing -0.02em / line-height 1.2
+--text-h2:          24px / weight 600 / letter-spacing -0.02em / line-height 1.25
+--text-h3:          18px / weight 600 / letter-spacing -0.01em / line-height 1.35
+--text-body-lg:     16px / weight 400 / line-height 1.55
+--text-body:        15px / weight 400 / line-height 1.5
+--text-body-sm:     14px / weight 400 / line-height 1.5
+--text-label:       13px / weight 500 / letter-spacing +0.02em / line-height 1.4
+--text-eyebrow:     12px / weight 600 / letter-spacing +0.08em / text-transform uppercase
+--text-micro:       12px / weight 500 / line-height 1.4
+```
 
-Adaptive component rules (apply everywhere):
+**Usage:**
+- `display` — landing/marketing hero titles only
+- `h1` — page titles
+- `h2` — major section titles
+- `h3` — card titles, subsections
+- `body-lg` — welcoming intro text on auth pages
+- `body` — default body text everywhere
+- `body-sm` — dense tables, dense lists
+- `label` — form labels, table column headers
+- `eyebrow` — section markers ("ACCESS PORTALS", "ACCOUNT DETAILS")
+- `micro` — timestamps, help text, small metadata
 
-- Tables on desktop become cards on mobile. Never horizontal-scroll a wide table on a phone.
-- Dropdowns and select menus become bottom sheets on mobile.
-- Modals become full-screen sheets on mobile (dismiss by swipe-down or explicit close).
-- Navigation: sidebar on desktop, bottom tab bar on mobile for user-facing portals (Reseller, Shipping, Finance). Admin gets a hamburger + drawer on mobile since it has more sections than fit in a tab bar.
-- Sticky bottom action buttons on mobile for primary actions (Place Order, Confirm Dispatch, Approve Payment).
-- Loading skeletons match the target layout — do not show a desktop-shaped skeleton on a phone.
+### 15.4 Spacing system
 
-PWA requirements:
+Base unit: 4px. All spacing multiples of 4.
+```
+--space-1:  4px    --space-2:  8px    --space-3:  12px   --space-4:  16px
+--space-5:  20px   --space-6:  24px   --space-8:  32px   --space-10: 40px
+--space-12: 48px   --space-16: 64px   --space-20: 80px   --space-24: 96px
+```
 
-- Single manifest.json at the root serving the "MLT Ops" installable app.
-- Optional second manifest served conditionally at /ship path so Shipping staff can install a dedicated "MLT Shipping" icon on warehouse tablets — same codebase, separate PWA identity. Build the plumbing; do not require its use.
-- Service worker with offline shell (login screen and static assets cacheable; API calls network-first).
-- Install prompt shown contextually — after successful login, on second visit, dismissible and remembered.
-- iOS-compatible install (Safari): correct apple-touch-icon, splash screens, status bar theming.
-- Push notifications: schema-ready but disabled by default. Enable in Phase 9.
+**Rules:**
+- Card internal padding: `space-6` (24px) desktop, `space-5` (20px) mobile
+- Gap between cards in a grid: `space-5` (20px)
+- Page horizontal padding: `space-6` (24px) mobile, `space-8` (32px) tablet, `space-10` (40px) desktop
+- Form field vertical spacing: `space-5` (20px) between fields
+- Icon-to-text spacing in buttons/badges: `space-2` (8px)
 
-Reseller portal specific UX (Shopify-simple style):
+### 15.5 Radius, shadows, and depth
 
-- Home: greeting, "Reorder from history" quick tiles, category chips, featured/new products.
-- Catalog: category tabs at top, product cards in a 2-column grid on mobile, filter/search icon in top bar, "Add" button on each card (one tap adds default quantity, tap the quantity to adjust).
-- Product detail: full-screen sheet with image, description, price after discount clearly shown, quantity stepper, sticky "Add to Cart" at bottom.
-- Cart: full-screen on mobile, itemized list, edit quantity inline, sticky total + "Place Order" button at bottom.
-- Checkout: simple stepper — Delivery address → Payment method + proof upload → Review → Submit.
-- Order history: scrollable list of order cards with clear status badges, tap to expand for details and tracking.
-- No infinite dropdowns, no nested modals, no hidden features. Every action must be reachable in at most two taps from a portal's home screen.
+**Border radius:**
+```
+--radius-sm:  6px    /* Buttons, badges, inputs */
+--radius-md:  8px    /* Small cards */
+--radius-lg:  12px   /* Standard cards */
+--radius-xl:  16px   /* Feature cards, modals */
+--radius-full: 999px /* Pills, avatars */
+```
+
+**Shadows (layered for depth, subtle for premium feel):**
+```
+--shadow-xs:  0 1px 2px rgba(10, 22, 40, 0.04);
+--shadow-sm:  0 1px 2px rgba(10, 22, 40, 0.04), 0 2px 4px rgba(10, 22, 40, 0.04);
+--shadow-md:  0 1px 2px rgba(10, 22, 40, 0.04), 0 8px 24px rgba(10, 22, 40, 0.06);
+--shadow-lg:  0 4px 6px rgba(10, 22, 40, 0.05), 0 20px 40px rgba(10, 22, 40, 0.10);
+--shadow-focus: 0 0 0 3px rgba(62, 123, 250, 0.15);
+```
+
+**Usage:**
+- `xs` — subtle input elevation
+- `sm` — dropdown items, small popovers
+- `md` — standard cards
+- `lg` — modals, elevated feature cards
+- `focus` — focus rings on inputs, focused cards
+
+### 15.6 Motion
+
+```
+--ease-out:      cubic-bezier(0.4, 0, 0.2, 1)
+--ease-in-out:   cubic-bezier(0.4, 0, 0.6, 1)
+--duration-fast: 150ms
+--duration-base: 200ms
+--duration-slow: 300ms
+```
+
+**Rules:**
+- Hover transitions: `150ms ease-out`
+- Menu/drawer open/close: `200ms ease-out`
+- Modal enter: `200ms ease-out`
+- Page transitions: `300ms ease-out` (rare, use sparingly)
+- **Never** use spring physics, bouncing, or elastic curves
+- **Never** animate the whole page on route change
+
+### 15.7 Iconography
+
+**Library:** Lucide React (already installed via shadcn/ui).
+
+**Sizes:**
+- 14px — inline within text, in badges
+- 16px — inside buttons, table row actions
+- 18px — form field icons (leading icons)
+- 20px — sidebar navigation icons
+- 24px — page headers, empty state top icons
+- 32px+ — hero decorative icons only
+
+**Style rules:**
+- Monoline (single-weight outline) only
+- Stroke width: 1.5 (Lucide's default is 2, override to 1.5 for refinement)
+- No filled icons except in tightly controlled cases (checkmarks in success states)
+- Color: inherits from text color; accent color for interactive elements
+
+### 15.8 Illustrations
+
+**Philosophy:** Used **sparingly** for meaningful moments. Empty states, auth hero, onboarding milestones, error pages. Never decoration for the sake of decoration.
+
+**Style:**
+- Monoline, matches iconography stroke weight (1.5px)
+- Duotone maximum — one primary color (accent blue or dark navy) + one supporting color at reduced opacity
+- Custom-made in SVG, hand-crafted, not stock/AI-generated
+- Abstract or geometric metaphors preferred over literal illustrations
+- Example for MLT Ops auth page: a stylized geometric composition of an isometric building/warehouse structure with subtle abstract elements suggesting logistics, roughly 200-300px wide, 40-50% opacity, sitting behind or beside the brand statement
+
+**Never:**
+- Cartoon characters
+- Stock illustrations from unDraw, Storyset, etc. (recognizable style)
+- Illustrations with human figures (dating problem — always look off after a year)
+- Emoji as illustration
+
+### 15.9 Component specifications
+
+#### Button
+
+**Variants:**
+- **Primary:** `bg: --brand-navy-950`, `color: white`, `hover: --brand-navy-900`
+- **Accent:** `bg: --accent-500`, `color: white`, `hover: --accent-600` — used for the single most important CTA per page
+- **Secondary:** `bg: transparent`, `border: 1px solid --border-default`, `color: --text-primary`, `hover: bg: --surface-muted`
+- **Ghost:** `bg: transparent`, `color: --text-primary`, `hover: bg: --surface-muted`
+- **Destructive:** `bg: --danger-500`, `color: white`, `hover: darken 10%`
+
+**Sizes:**
+- `sm`: 32px height, 12px horizontal padding, 13px text
+- `md` (default): 40px height, 16px horizontal padding, 15px text
+- `lg`: 48px height, 20px horizontal padding, 16px text
+
+**Common:**
+- Border-radius: `--radius-sm`
+- Weight: 500
+- Transition: `--duration-fast --ease-out`
+- Focus ring: `--shadow-focus`
+- Loading state: spinner replaces icon, text stays, button disabled
+
+#### Input
+
+- Height: 44px
+- Border: `1px solid --border-default`
+- Border-radius: `--radius-sm`
+- Padding: `0 14px` (16px if with leading icon add left padding 40px)
+- Background: `--surface-card`
+- Text size: 15px
+- Placeholder color: `--text-tertiary`
+- **Focus:** border `--accent-500`, shadow `--shadow-focus`, no color change to background
+- **Error:** border `--danger-500`, error text below in 13px `--danger-700`
+- **Disabled:** background `--surface-muted`, text `--text-tertiary`, cursor not-allowed
+
+#### Card
+
+- Background: `--surface-card`
+- Border: `1px solid --border-subtle`
+- Border-radius: `--radius-lg`
+- Shadow: `--shadow-md`
+- Padding: `--space-6` (24px)
+- **Hover (if interactive):** shadow shifts to `--shadow-lg`, transition fast
+
+#### Badge (Status — Alternative E style, LOCKED)
+
+Icon inside badge + text. Refined chip. Not colored dots.
+
+- Structure: `<icon 14px><text 13px weight 500>`
+- Padding: `4px 10px`
+- Border-radius: `--radius-full`
+- Gap between icon and text: 6px
+- **Color pairings:**
+  - Paid/Success: `bg: --success-100`, `text+icon: --success-700`, icon = `check-circle`
+  - Pending: `bg: --warning-100`, `text+icon: --warning-700`, icon = `clock`
+  - Shipped: `bg: --info-100`, `text+icon: --info-700`, icon = `truck`
+  - Cancelled: `bg: --surface-muted`, `text+icon: --text-secondary`, icon = `x-circle`
+  - Refunded: `bg: --surface-muted`, `text+icon: --text-secondary`, icon = `refresh-ccw`
+  - Failed/Danger: `bg: --danger-100`, `text+icon: --danger-700`, icon = `alert-circle`
+
+#### Sidebar (Admin/Finance/Shipping portals)
+
+- Width: 240px expanded, 64px collapsed
+- Background: `--brand-navy-950` (deepest navy, matches auth left panel)
+- Border-right: none (contrast against `--surface-canvas` main area does the separation)
+- Text color: `--text-inverse` at 70% opacity
+- Active item: full opacity + `--accent-500` left border (3px wide) + slight `--brand-navy-900` background
+- Hover: opacity to 90%, subtle background lift
+- Logo behavior (Option C, LOCKED):
+  - Collapsed: 32px mountain icon only, white version, centered
+  - Expanded: full lockup in white, 28px height, positioned in top-left
+- Navigation section labels (eyebrows): 12px uppercase, letter-spacing +0.08em, color: white at 40% opacity
+- Icons: 20px, monoline, matches text opacity
+- User section at bottom: avatar + name + role, small chevron menu
+
+#### Mobile bottom tab bar (Reseller/Shipping/Finance)
+
+- Height: 64px (safe area padding on iOS)
+- Background: `--surface-card`
+- Border-top: `1px solid --border-subtle`
+- 3-5 tabs, evenly spaced
+- Active tab: `--accent-500` icon + label, inactive: `--text-tertiary`
+- Icons: 22px, monoline
+- Label: 11px below icon, weight 500
+
+### 15.10 Auth page layout (Login, Forgot Password, Reset Password) — LOCKED
+
+**Desktop (≥1024px):**
+- Two-column split, 45% / 55%
+- Left column: 45% width, full height, `--brand-navy-950` background with subtle radial gradient overlay from top-left (slightly warmer `--brand-navy-800` at 40% opacity fading to base)
+- Left column content (from top to bottom, vertically centered as a group):
+  - ML Trading white logo (full lockup), 40px height, top-left area at 48px from edges
+  - Space
+  - Brand statement (h2 in white): "Operations that scale."
+  - Sub-statement (body-lg, white at 70% opacity): "The complete B2B operations platform for modern distributors."
+  - Space
+  - Custom monoline duotone illustration (accent blue + white at low opacity), ~280px wide, abstract geometric/architectural
+  - Space
+  - Footer: "© 2026 ML Trading International Ltd" (micro text, white at 40% opacity), bottom-left at 48px from edges
+- Right column: 55% width, `--surface-canvas` background
+- Right column content (vertically centered):
+  - Card, max-width 420px, centered
+  - Card contents:
+    - Eyebrow "WELCOME BACK" (or page-specific)
+    - H2 title
+    - Body-sm subtitle
+    - Space (24px)
+    - Form fields
+    - Space
+    - CTA button (primary variant, full-width)
+    - Space (12px)
+    - Secondary action link (accent color, centered below button)
+- No page-level scroll; card content stays within viewport on standard heights
+
+**Mobile (<1024px):**
+- Single column, stacked
+- Top: dark hero band, `--brand-navy-950`, 240px tall (or 30vh, whichever is smaller)
+- Hero band content:
+  - Centered logo (white lockup), 32px height
+  - Below: brand statement in white h3
+  - Sub-statement in body-sm white at 70%
+- Below hero: form card
+  - Full width minus 20px padding on each side
+  - Card floats slightly above the hero-canvas seam (negative top margin -24px, shadow-lg)
+  - Same content as desktop card
+- No illustration on mobile (space is precious)
+
+**Dark mode:**
+- Left panel stays the same (already dark)
+- Right panel canvas becomes `--brand-navy-800`, card becomes `--brand-navy-700`
+- Text colors invert to dark-mode tokens
+
+### 15.11 Applies to every future page
+
+Every page in every phase (products, orders, dashboards, reports, everything) must be built with:
+- Design tokens from this section, never inline hex or magic numbers
+- Layout patterns established here (sidebar, tab bar, card grids, form structures)
+- Motion tokens for all transitions
+- Iconography style and sizes as specified
+- Status badges in the Alternative E style
+- Typography scale, no invented sizes
+- Spacing scale, no invented spacings
+
+**Enforcement:** Claude Code must reference `--token-name` in CSS, not hex values. Any deviation requires a note in the phase report explaining why and either a design-token addition or explicit owner approval.
+
+### 15.12 Reseller portal specific UX (mobile-first, Shopify-simple)
+
+The Reseller portal is the most user-facing and non-technical audience. It must feel Shopify-simple.
+
+**Home:**
+- Greeting with reseller name
+- "Reorder from history" quick tiles (last 3-5 recent orders)
+- Category chips as horizontal scroll
+- Featured/new products section
+- Sticky bottom tab bar
+
+**Catalog:**
+- Category tabs at top (sticky on scroll)
+- Product cards in 2-column grid on mobile, 3-4 on tablet, 4-6 on desktop
+- Filter/search icon in top bar
+- "Add" button on each card (one tap adds default quantity, tap quantity to adjust)
+- Card shows: image, name, price after discount, "Add" button
+
+**Product detail:**
+- Full-screen sheet on mobile
+- Product image, name, category, discount-applied price shown clearly
+- Description
+- Quantity stepper
+- Sticky "Add to Cart" at bottom
+
+**Cart:**
+- Full-screen on mobile
+- Itemized list with inline quantity edit
+- Sticky total + "Place Order" button at bottom
+
+**Checkout:**
+- Simple stepper: Delivery address → Payment method + proof upload → Review → Submit
+- No hidden features, every action reachable in max two taps from portal home
+
+**Order history:**
+- Scrollable list of order cards with clear status badges
+- Tap to expand for details, tracking, and downloadable summary
+
+**Reseller portal UX principles:**
+- Non-technical users are the target
+- Every primary action reachable in ≤2 taps from home
+- No nested modals
+- No infinite dropdowns
+- No hidden features
+- Sticky action buttons for primary tasks
 
 ---
 
