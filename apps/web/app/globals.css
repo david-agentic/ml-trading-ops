@@ -2,15 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-/*
- * Palette locked in CLAUDE.md §15 (commit 6f654b8), source of truth — do not
- * edit values here without updating that section too. Plain hex custom
- * properties rather than shadcn/ui's usual HSL triplets: simpler to keep in
- * sync with the hex values CLAUDE.md actually specifies, at the cost of not
- * supporting shadcn's `bg-primary/50`-style opacity modifiers. Nothing in
- * Phase 1 needs those.
- */
 @layer base {
+  /*
+   * Legacy shadcn-mapped tokens from the original CLAUDE.md §15 palette lock
+   * (commit 6f654b8). Kept as-is (not removed) so components not yet
+   * migrated to the new design-system tokens below keep working — see
+   * commit "refactor(ui): update primitives to match Section 15.9" for which
+   * components have moved off these.
+   */
   :root {
     --background: #ffffff;
     --foreground: #0f172a;
@@ -62,6 +61,128 @@
     --border: #334155;
     --input: #334155;
     --ring: #8b939c;
+  }
+
+  /*
+   * Full design system, per CLAUDE.md §15 (rewritten). Additive to the
+   * legacy block above, not a replacement — see Task 4's Button/Input/Card/
+   * Badge refactor for the first components using these directly.
+   */
+  :root {
+    /* §15.2 Brand core */
+    --brand-navy-950: #0a1628;
+    --brand-navy-900: #101e36;
+    --brand-navy-800: #152845;
+    --brand-navy-700: #1e3357;
+    --brand-navy-500: #3a4551;
+
+    /* §15.2 Brand accent */
+    --accent-500: #3e7bfa;
+    --accent-600: #2563eb;
+    --accent-400: #6996fb;
+    --accent-50: #eef3ff;
+
+    /* §15.2 Surfaces (light mode defaults) */
+    --surface-canvas: #fafbfc;
+    --surface-card: #ffffff;
+    --surface-muted: #f1f5f9;
+    --surface-hover: #f8fafc;
+
+    /* §15.2 Text (light mode operational values) */
+    --text-primary: #0a1628;
+    --text-secondary: #5a6478;
+    --text-tertiary: #94a3b8;
+    --text-inverse: #ffffff;
+
+    /* §15.2 Text (dark mode values, named per spec — also applied to the
+       operational --text-* vars inside .dark below) */
+    --text-primary-dark: #f1f5f9;
+    --text-secondary-dark: #94a3b8;
+    --text-tertiary-dark: #64748b;
+
+    /* §15.2 Borders (light mode) */
+    --border-subtle: #f1f5f9;
+    --border-default: #e5e7eb;
+    --border-strong: #cbd5e1;
+    --border-dark: #2a3b57;
+
+    /* §15.2 Semantic (same across light/dark per spec) */
+    --success-500: #10b981;
+    --success-100: #d1fae5;
+    --success-700: #047857;
+    --warning-500: #f59e0b;
+    --warning-100: #fef3c7;
+    --warning-700: #b45309;
+    --danger-500: #ef4444;
+    --danger-100: #fee2e2;
+    --danger-700: #b91c1c;
+    --info-500: #3e7bfa;
+    --info-100: #dbeafe;
+    --info-700: #1e40af;
+
+    /* §15.4 Spacing */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 20px;
+    --space-6: 24px;
+    --space-8: 32px;
+    --space-10: 40px;
+    --space-12: 48px;
+    --space-16: 64px;
+    --space-20: 80px;
+    --space-24: 96px;
+
+    /* §15.5 Radius */
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-full: 999px;
+
+    /* §15.5 Shadows */
+    --shadow-xs: 0 1px 2px rgba(10, 22, 40, 0.04);
+    --shadow-sm:
+      0 1px 2px rgba(10, 22, 40, 0.04),
+      0 2px 4px rgba(10, 22, 40, 0.04);
+    --shadow-md:
+      0 1px 2px rgba(10, 22, 40, 0.04),
+      0 8px 24px rgba(10, 22, 40, 0.06);
+    --shadow-lg:
+      0 4px 6px rgba(10, 22, 40, 0.05),
+      0 20px 40px rgba(10, 22, 40, 0.1);
+    --shadow-focus: 0 0 0 3px rgba(62, 123, 250, 0.15);
+
+    /* §15.6 Motion */
+    --ease-out: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-in-out: cubic-bezier(0.4, 0, 0.6, 1);
+    --duration-fast: 150ms;
+    --duration-base: 200ms;
+    --duration-slow: 300ms;
+  }
+
+  .dark {
+    /* Operational --text-*/--surface-* vars switch to dark values. Semantic
+       (success/warning/danger/info) and brand-navy/accent scales are
+       unchanged across modes per §15.2. */
+    --text-primary: var(--text-primary-dark);
+    --text-secondary: var(--text-secondary-dark);
+    --text-tertiary: var(--text-tertiary-dark);
+
+    /* §15.10's explicit dark-mode auth rule ("canvas becomes
+       --brand-navy-800, card becomes --brand-navy-700") extended as the
+       general dark-mode surface mapping — not separately specified
+       elsewhere, applied consistently per §15.11's "no invented values"
+       rule using the closest given tokens. */
+    --surface-canvas: var(--brand-navy-800);
+    --surface-card: var(--brand-navy-700);
+    --surface-muted: var(--brand-navy-900);
+    --surface-hover: var(--brand-navy-900);
+
+    --border-subtle: var(--border-dark);
+    --border-default: var(--border-dark);
+    --border-strong: var(--brand-navy-500);
   }
 
   * {
