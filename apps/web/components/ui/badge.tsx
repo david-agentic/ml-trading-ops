@@ -1,4 +1,5 @@
 import { cva, type VariantProps } from 'class-variance-authority';
+import { AlertCircle, CheckCircle, Clock, RefreshCcw, Truck, XCircle } from 'lucide-react';
 import * as React from 'react';
 import { cn } from '@/lib/utils';
 
@@ -28,4 +29,44 @@ function Badge({ className, variant, ...props }: BadgeProps) {
   return <div className={cn(badgeVariants({ variant }), className)} {...props} />;
 }
 
-export { Badge, badgeVariants };
+/**
+ * §15.9 "Badge (Status — Alternative E style, LOCKED)": icon + text inside a
+ * refined chip, not a colored dot. Separate from the legacy Badge/variant
+ * above (rather than overloading "variant") so existing plain-chip usages
+ * are unaffected — this is specifically for the 6 named business states.
+ */
+const STATUS_CONFIG = {
+  success: { icon: CheckCircle, bg: 'bg-success-100', text: 'text-success-700' },
+  pending: { icon: Clock, bg: 'bg-warning-100', text: 'text-warning-700' },
+  shipped: { icon: Truck, bg: 'bg-info-100', text: 'text-info-700' },
+  cancelled: { icon: XCircle, bg: 'bg-surface-muted', text: 'text-text-secondary' },
+  refunded: { icon: RefreshCcw, bg: 'bg-surface-muted', text: 'text-text-secondary' },
+  danger: { icon: AlertCircle, bg: 'bg-danger-100', text: 'text-danger-700' },
+} as const;
+
+export type BadgeStatus = keyof typeof STATUS_CONFIG;
+
+export interface StatusBadgeProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'children'> {
+  status: BadgeStatus;
+  children: React.ReactNode;
+}
+
+function StatusBadge({ status, className, children, ...props }: StatusBadgeProps) {
+  const { icon: Icon, bg, text } = STATUS_CONFIG[status];
+  return (
+    <span
+      className={cn(
+        'inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-label font-medium',
+        bg,
+        text,
+        className,
+      )}
+      {...props}
+    >
+      <Icon size={14} strokeWidth={1.5} />
+      {children}
+    </span>
+  );
+}
+
+export { Badge, badgeVariants, StatusBadge };
