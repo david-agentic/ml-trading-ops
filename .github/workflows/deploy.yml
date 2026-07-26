@@ -57,6 +57,18 @@ jobs:
         # the Super Admin user already exists. Safe to run on every deploy.
         run: pnpm db:seed
 
+      - name: Deploy
+        working-directory: apps/api
+        run: npx wrangler@^4 deploy ${{ steps.env.outputs.wrangler_env_flag }}
+
+      # Runs after Deploy, not before: Cloudflare changed `secret put` (v3.78.5+,
+      # carried into v4) to require the worker's latest version already be
+      # deployed before secrets can be modified - "Secret edit failed... the
+      # latest version of your Worker isn't currently deployed" otherwise. This
+      # order worked under our previous wrangler@^3 pin; the v4 bump surfaced
+      # this requirement. A brief window where the freshly-deployed code runs
+      # against whatever secrets were already set from the prior deploy is
+      # harmless for Phase 1 (no real business data yet).
       - name: Set Workers secrets
         working-directory: apps/api
         env:
@@ -67,10 +79,6 @@ jobs:
           echo "$DATABASE_URL" | npx wrangler@^4 secret put DATABASE_URL ${{ steps.env.outputs.wrangler_env_flag }}
           echo "$JWT_SIGNING_KEY" | npx wrangler@^4 secret put JWT_SIGNING_KEY ${{ steps.env.outputs.wrangler_env_flag }}
           echo "$JWT_REFRESH_KEY" | npx wrangler@^4 secret put JWT_REFRESH_KEY ${{ steps.env.outputs.wrangler_env_flag }}
-
-      - name: Deploy
-        working-directory: apps/api
-        run: npx wrangler@^4 deploy ${{ steps.env.outputs.wrangler_env_flag }}
 
   deploy-web:
     name: Deploy Web
