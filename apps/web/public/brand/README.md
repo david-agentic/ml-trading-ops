@@ -18,8 +18,12 @@ CLAUDE.md §15 and this file originally called for `logo-dark.svg`/`logo-light.s
 | `../icon-192.png`, `../icon-512.png` | PWA manifest icons, resized from `logo-icon.png`. |
 | `../apple-touch-icon.png` | 180×180, flattened onto the brand `--secondary` surface color (`#F1F3F5`) — iOS renders transparency as solid black, so this one can't stay transparent. |
 | `../favicon.ico` | 32×32 + 16×16 PNGs packed into one .ico via `png-to-ico`. |
+| `logo-full-white.png` | Full lockup, white, 400px wide base. For the CLAUDE.md §15.10 auth-page dark left panel. |
+| `logo-icon-white.png` | Icon only, white, 128×128 base. For a collapsed dark sidebar. |
 
-**Where the light/dark problem actually went:** the login page (E8) avoids it entirely by placing the logo on a light card that sits on top of the brand gradient background, rather than needing a version of the logo that reads directly against a dark or gradient surface. This works for Phase 1's actual need. A true dark-mode-native logo variant (if ever needed — e.g. a dark-surface sidebar header) is deferred; flagged as a known gap, not silently dropped.
+**White variants — stencil, not invert:** the two white PNGs above are **not** a color inversion. Inverting this specific palette produces muddy, off-brand results — checked the actual math: navy `#3A4551` (58,69,81) inverts to (197,186,174), a warm tan, not white; the grey and cream accent invert to a dark brown-grey and dark navy respectively. A literal invert would swap the mark's tri-tone geometry for an unrelated color scheme, not produce "the same logo in white." Instead, `makeWhiteStencil()` in the generation script uses the already-transparent image's alpha channel as a stencil and fills every non-transparent pixel with pure white (255,255,255), leaving alpha/edges untouched. Verified by compositing onto a navy swatch — clean edges, no artifacts.
+
+E8's login page originally sidestepped the light/dark logo problem by keeping the logo on a light card. CLAUDE.md §15.10 (rewritten) now explicitly puts the logo directly on the dark left panel, which is what these white variants are for.
 
 ## Icon vs. full lockup
 

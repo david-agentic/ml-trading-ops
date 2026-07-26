@@ -30,6 +30,31 @@ async function makeTransparent(image) {
   return image;
 }
 
+/**
+ * White variant for dark surfaces (auth left panel, collapsed sidebar).
+ *
+ * NOT a true color inversion. The logo is a multi-tone mark (navy #3A4551,
+ * grey #8B939C, a cream accent) — inverting RGB channels turns navy into a
+ * warm beige/tan, grey into a dark brown-grey, and the cream accent into a
+ * dark navy, i.e. exactly the "grey artifacts" problem this task's spec
+ * anticipated, checked by computing it: (58,69,81) inverted is (197,186,174)
+ * — not white, not clean. Going straight to the stencil fallback instead:
+ * keep the alpha channel from the already-transparent image, fill every
+ * non-transparent pixel with pure white. This is what "white version of the
+ * logo" means for a mark whose whole point is its tri-tone geometry — a
+ * literal invert would replace that geometry with an unrelated color scheme,
+ * not produce a white rendition of the same mark.
+ */
+function makeWhiteStencil(image) {
+  image.scan(0, 0, image.bitmap.width, image.bitmap.height, function scanner(x, y, idx) {
+    this.bitmap.data[idx + 0] = 255;
+    this.bitmap.data[idx + 1] = 255;
+    this.bitmap.data[idx + 2] = 255;
+    // alpha (idx + 3) untouched — preserves the existing transparency/edges
+  });
+  return image;
+}
+
 async function main() {
   console.log('Reading source PNGs...');
   const iconSource = await Jimp.read(path.join(SOURCE_DIR, 'logo-icon-source.png'));
@@ -53,6 +78,15 @@ async function main() {
   const appleTouchIcon = iconTransparent.clone().resize(140, 140);
   appleTouchBg.composite(appleTouchIcon, 20, 20);
   await appleTouchBg.writeAsync(path.join(PUBLIC_DIR, 'apple-touch-icon.png'));
+
+  console.log('Writing white logo variants (stencil, not invert - see makeWhiteStencil)...');
+  const iconWhite = makeWhiteStencil(iconTransparent.clone()).resize(128, 128);
+  await iconWhite.writeAsync(path.join(BRAND_DIR, 'logo-icon-white.png'));
+  const fullWhite = makeWhiteStencil(fullTransparent.clone()).resize(
+    400,
+    Jimp.AUTO,
+  );
+  await fullWhite.writeAsync(path.join(BRAND_DIR, 'logo-full-white.png'));
 
   console.log('Writing favicon.ico...');
   const favicon32 = await iconTransparent.clone().resize(32, 32).getBufferAsync(Jimp.MIME_PNG);
