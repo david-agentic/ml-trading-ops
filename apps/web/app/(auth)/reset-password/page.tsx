@@ -54,9 +54,9 @@ function ResetPasswordForm() {
 
   if (!token) {
     return (
-      <div className="w-full max-w-sm rounded-lg bg-background p-8 shadow-lg text-center">
-        <p className="text-sm font-medium text-destructive">This reset link is missing its token.</p>
-        <Link href="/forgot-password" className="mt-4 inline-block text-sm text-primary hover:underline">
+      <div className="text-center">
+        <p className="text-body-sm font-medium text-danger-500">This reset link is missing its token.</p>
+        <Link href="/forgot-password" className="mt-4 inline-block text-body-sm text-accent-500 hover:underline">
           Request a new reset link
         </Link>
       </div>
@@ -64,12 +64,13 @@ function ResetPasswordForm() {
   }
 
   return (
-    <div className="w-full max-w-sm rounded-lg bg-background p-8 shadow-lg">
-      <h1 className="mb-1 text-lg font-semibold">Set a new password</h1>
-      <p className="mb-6 text-sm text-muted-foreground">At least 10 characters, with a letter and a number.</p>
+    <>
+      <p className="text-eyebrow text-text-tertiary">RESET PASSWORD</p>
+      <h1 className="mt-1 text-h2 text-text-primary">Set a new password</h1>
+      <p className="mt-1 text-body-sm text-text-secondary">At least 10 characters, with a letter and a number.</p>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4" noValidate>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6 space-y-5" noValidate>
           <FormField
             control={form.control}
             name="newPassword"
@@ -97,23 +98,21 @@ function ResetPasswordForm() {
             )}
           />
 
-          {submitError && <p className="text-sm font-medium text-destructive">{submitError}</p>}
+          {submitError && <p className="text-body-sm font-medium text-danger-500">{submitError}</p>}
 
-          <Button type="submit" className="w-full" disabled={submitting}>
+          <Button type="submit" variant="primary" size="lg" className="w-full" disabled={submitting}>
             {submitting ? 'Saving…' : 'Save new password'}
           </Button>
         </form>
       </Form>
-    </div>
+    </>
   );
 }
 
 export default function ResetPasswordPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-primary to-primary-hover p-4">
-      <Suspense fallback={null}>
-        <ResetPasswordForm />
-      </Suspense>
-    </div>
+    <Suspense fallback={null}>
+      <ResetPasswordForm />
+    </Suspense>
   );
 }
