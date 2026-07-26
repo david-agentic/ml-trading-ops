@@ -64,13 +64,13 @@ jobs:
           JWT_SIGNING_KEY: ${{ secrets.JWT_SIGNING_KEY }}
           JWT_REFRESH_KEY: ${{ secrets.JWT_REFRESH_KEY }}
         run: |
-          echo "$DATABASE_URL" | npx wrangler@^3 secret put DATABASE_URL ${{ steps.env.outputs.wrangler_env_flag }}
-          echo "$JWT_SIGNING_KEY" | npx wrangler@^3 secret put JWT_SIGNING_KEY ${{ steps.env.outputs.wrangler_env_flag }}
-          echo "$JWT_REFRESH_KEY" | npx wrangler@^3 secret put JWT_REFRESH_KEY ${{ steps.env.outputs.wrangler_env_flag }}
+          echo "$DATABASE_URL" | npx wrangler@^4 secret put DATABASE_URL ${{ steps.env.outputs.wrangler_env_flag }}
+          echo "$JWT_SIGNING_KEY" | npx wrangler@^4 secret put JWT_SIGNING_KEY ${{ steps.env.outputs.wrangler_env_flag }}
+          echo "$JWT_REFRESH_KEY" | npx wrangler@^4 secret put JWT_REFRESH_KEY ${{ steps.env.outputs.wrangler_env_flag }}
 
       - name: Deploy
         working-directory: apps/api
-        run: npx wrangler@^3 deploy ${{ steps.env.outputs.wrangler_env_flag }}
+        run: npx wrangler@^4 deploy ${{ steps.env.outputs.wrangler_env_flag }}
 
   deploy-web:
     name: Deploy Web
@@ -106,4 +106,4 @@ jobs:
 
       - name: Deploy
         working-directory: apps/web
-        run: npx wrangler@^3 deploy ${{ steps.env.outputs.wrangler_env_flag }}
+        run: npx wrangler@^4 deploy ${{ steps.env.outputs.wrangler_env_flag }}
