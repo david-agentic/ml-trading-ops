@@ -2,19 +2,28 @@ import { argon2id, argon2Verify } from 'hash-wasm';
 
 /**
  * SECURITY-TODO: Argon2id parameters tuned for Workers Free 10ms budget — revisit
- * before real production traffic. See phase-01-report.md.
+ * before real production traffic (upgrading to the $5/mo Workers Paid plan, 50ms
+ * budget, would let these go back up with no code change needed). See
+ * phase-01-report.md.
  *
- * Chosen from a provisional Node measurement (~3.7ms; see password.test.ts) since
- * wrangler's workerd binary failed to install on this network (see
- * apps/api/vitest.config.ts) — the true Workers CPU-ms figure is still unmeasured
- * and must be re-verified at first live deploy (Task #12) before this is final.
+ * Lowered a second time (1024 KiB/2 iters -> 256 KiB/1 iter) after the earlier,
+ * still-provisional Node-measured values (see password.test.ts) turned out to be
+ * a live production incident, not just a theoretical risk: POST /auth/login was
+ * 500ing in production specifically (not /refresh or /me, which don't call
+ * verifyPassword) - consistent with Cloudflare force-killing the request for
+ * exceeding the Free plan's CPU cap, which a JS try/catch cannot intercept. The
+ * old params had already measured 6-14ms idle and 34-63ms under load in Node
+ * proxy testing this session - i.e. sometimes over budget even in the "idle"
+ * case. This is a real, deliberate security-margin reduction (already below
+ * OWASP's usual Argon2id recommendation before this change), not a routine
+ * tuning tweak - owner-approved.
  *
  * Lives in packages/shared (not apps/api) so packages/db's seed script can hash the
  * Super Admin's temp password without apps/api depending on packages/db depending
  * on apps/api (a cycle) — packages/shared has no dependency on either.
  */
-const ARGON2_MEMORY_SIZE_KIB = 1024;
-const ARGON2_ITERATIONS = 2;
+const ARGON2_MEMORY_SIZE_KIB = 256;
+const ARGON2_ITERATIONS = 1;
 const ARGON2_PARALLELISM = 1;
 const ARGON2_HASH_LENGTH = 32;
 const SALT_LENGTH_BYTES = 16;
