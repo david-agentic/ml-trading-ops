@@ -15,21 +15,21 @@ const SUPER_ADMIN_EMAIL = 'daoodtaxexpertllc@gmail.com';
 const SUPER_ADMIN_NAME = 'Muhammad Daood';
 
 /**
- * Must match packages/shared/src/crypto/password.ts's ARGON2_MEMORY_SIZE_KIB.
- * Argon2's PHC-encoded hash format embeds the parameters it was hashed with
- * (`$argon2id$v=19$m=<memory>,t=<iterations>,p=<parallelism>$...`) - verifyPassword
- * reads them from the stored hash itself, not from the current code's constants.
- * That means lowering ARGON2_MEMORY_SIZE_KIB (done to fix a production 500 caused
- * by the old params exceeding the Workers Free plan's CPU budget) does nothing for
- * *already-hashed* passwords - seedSuperAdmin used to unconditionally skip if the
- * user already existed, which would have left the Super Admin permanently stuck on
- * the old, over-budget parameters. This detects that mismatch and re-hashes.
+ * Must match packages/shared/src/crypto/password.ts's hash format prefix.
+ * Password hashing switched twice this phase: Argon2id (hash-wasm, then
+ * @rabbit-company/argon2id) turned out to be fundamentally incompatible with
+ * Cloudflare Workers (dynamic WASM compilation is disallowed at request time
+ * - confirmed live, this was the actual cause of a production 500 on
+ * POST /auth/login), so password.ts now hashes with PBKDF2-HMAC-SHA256
+ * instead. Every prior hash format is a different, incompatible encoding -
+ * seedSuperAdmin used to unconditionally skip if the user already existed,
+ * which would have left the Super Admin stuck on a hash verifyPassword can
+ * no longer read at all. This detects any non-current format and re-hashes.
  */
-const CURRENT_ARGON2_MEMORY_KIB = 256;
+const CURRENT_HASH_PREFIX = 'pbkdf2-sha256$';
 
-function argon2MemoryParam(encodedHash: string): number | null {
-  const match = encodedHash.match(/\$m=(\d+),/);
-  return match?.[1] ? parseInt(match[1], 10) : null;
+function isCurrentHashFormat(encodedHash: string): boolean {
+  return encodedHash.startsWith(CURRENT_HASH_PREFIX);
 }
 
 async function seedRoles(db: ReturnType<typeof createDb>) {
@@ -75,17 +75,17 @@ async function seedSuperAdmin(db: ReturnType<typeof createDb>, superAdminRoleId:
     .limit(1);
 
   if (row) {
-    if (argon2MemoryParam(row.passwordHash) === CURRENT_ARGON2_MEMORY_KIB) {
+    if (isCurrentHashFormat(row.passwordHash)) {
       // eslint-disable-next-line no-console
       console.log(`Super Admin (${SUPER_ADMIN_EMAIL}) already exists — skipped, no password reset.`);
       return;
     }
 
-    // Existing hash predates the CPU-budget fix - regenerate with a fresh temp
-    // password so it's re-hashed under the current (cheaper) Argon2id params.
-    // The previous temp password stops working; this mirrors first-creation UX
-    // (console-logged once, "change on first login") since nobody has
-    // successfully logged in with it yet.
+    // Existing hash predates the PBKDF2 switch (or an earlier Argon2id
+    // parameter change) - regenerate with a fresh temp password so it's
+    // re-hashed in the current format. The previous temp password stops
+    // working; this mirrors first-creation UX (console-logged once, "change
+    // on first login") since nobody has successfully logged in with it yet.
     const tempPassword = generateTempPassword();
     const passwordHash = await hashPassword(tempPassword);
     await db.update(users).set({ passwordHash, updatedAt: new Date() }).where(eq(users.id, row.id));
@@ -96,14 +96,14 @@ async function seedSuperAdmin(db: ReturnType<typeof createDb>, superAdminRoleId:
       action: 'update',
       resourceType: 'user',
       resourceId: row.id,
-      reason: 'Password re-hashed with updated Argon2id parameters (Workers CPU-budget fix)',
+      reason: 'Password re-hashed after switching to PBKDF2 (Argon2id was incompatible with Workers)',
       relatedModule: 'system',
     });
 
     // eslint-disable-next-line no-console
     console.log('='.repeat(60));
     // eslint-disable-next-line no-console
-    console.log('Super Admin password re-hashed (Argon2id parameters updated):');
+    console.log('Super Admin password re-hashed (hashing algorithm updated):');
     // eslint-disable-next-line no-console
     console.log(`  Email:    ${SUPER_ADMIN_EMAIL}`);
     // eslint-disable-next-line no-console

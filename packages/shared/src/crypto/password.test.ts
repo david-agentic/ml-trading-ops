@@ -20,6 +20,13 @@ describe('password hashing', () => {
     expect(hashA).not.toBe(hashB);
   });
 
+  it('rejects a malformed or legacy-format hash instead of throwing', async () => {
+    expect(await verifyPassword('correcthorse1', 'not-a-real-hash')).toBe(false);
+    // Old Argon2id-format hashes (from before the PBKDF2 switch) must fail
+    // closed, not crash - they no longer match ALGORITHM_ID.
+    expect(await verifyPassword('correcthorse1', '$argon2id$v=19$m=256,t=1,p=1$c2FsdA$aGFzaA')).toBe(false);
+  });
+
   it(
     'CPU-budget spike: measures real hashing cost — currently under plain Node, ' +
       'NOT the true Workers/workerd runtime (wrangler failed to install on this ' +
@@ -32,16 +39,16 @@ describe('password hashing', () => {
       const durationMs = performance.now() - start;
 
       // eslint-disable-next-line no-console
-      console.log(`[Argon2id CPU spike, Node proxy measurement] hashPassword took ${durationMs.toFixed(2)}ms`);
+      console.log(`[PBKDF2 CPU spike, Node proxy measurement] hashPassword took ${durationMs.toFixed(2)}ms`);
 
       // Free plan cap is 10ms CPU/request for the whole request (hashing + JWT +
-      // Zod + DB round-trip), not just hashing. Params were lowered again
-      // (see password.ts) after the old ones caused a real production 500 on
-      // POST /auth/login, consistent with a CPU-limit kill. Threshold tightened
-      // to match the actual 10ms constraint being guarded against, with a little
-      // headroom for the rest of the request (JWT + DB) - still a Node-measured
-      // regression guard, not the real gate (real gate is workerd re-measurement
-      // before production traffic).
+      // Zod + DB round-trip), not just hashing. ITERATIONS in password.ts (3,000)
+      // was chosen well under OWASP's 600,000 recommendation specifically to fit
+      // this budget - a real, deliberate security reduction, owner-approved after
+      // confirming 600,000 iterations costs ~780ms (see password.ts's comment).
+      // Threshold here leaves headroom for the rest of the request - still a
+      // Node-measured regression guard, not the real gate (real gate is workerd
+      // re-measurement before production traffic).
       expect(durationMs).toBeLessThan(8);
     },
   );
