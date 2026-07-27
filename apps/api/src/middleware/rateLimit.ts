@@ -31,16 +31,27 @@ export async function loginRateLimiter(c: Context<AppEnv>, next: Next) {
   }
 
   const key = loginRateLimitKey(ip, email);
-  const current = await c.env.RATE_LIMIT_KV.get(key);
-  const count = current ? parseInt(current, 10) : 0;
 
-  if (count >= MAX_ATTEMPTS) {
-    return c.json(
-      { error: { code: 'RATE_LIMITED', message: 'Too many login attempts. Try again later.' } },
-      429,
-    );
+  // KV is a secondary flood guard layered on top of the native binding
+  // (authFloodGuard, which already covers all of /auth/*) - if it's
+  // unavailable (e.g. binding misconfigured, transient KV outage), degrade
+  // to "allow" rather than taking the whole login endpoint down with it.
+  try {
+    const current = await c.env.RATE_LIMIT_KV.get(key);
+    const count = current ? parseInt(current, 10) : 0;
+
+    if (count >= MAX_ATTEMPTS) {
+      return c.json(
+        { error: { code: 'RATE_LIMITED', message: 'Too many login attempts. Try again later.' } },
+        429,
+      );
+    }
+
+    await c.env.RATE_LIMIT_KV.put(key, String(count + 1), { expirationTtl: WINDOW_SECONDS });
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error('[loginRateLimiter] RATE_LIMIT_KV unavailable, skipping KV-based rate limit', err);
   }
 
-  await c.env.RATE_LIMIT_KV.put(key, String(count + 1), { expirationTtl: WINDOW_SECONDS });
   await next();
 }

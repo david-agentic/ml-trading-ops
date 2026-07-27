@@ -1,10 +1,13 @@
 /**
  * §15.8 auth-hero illustration. Owner-approved exception (see CLAUDE.md §15.8
  * changelog note): sourced from a Storyset/Freepik "free-shipping" export,
- * recolored to the brand palette (navy #0A1628 + accent-500 #3E7BFA + a
- * muted accent-400 detail), converted to JSX via @svgr/cli with SVGO
- * disabled so the id attributes the animation CSS in globals.css targets
- * (e.g. #freepik--Airplane--inject-62) are preserved byte-for-byte.
+ * shown on the dark navy left panel of the auth layout. Recolored: the
+ * original dark-charcoal outline/detail color -> white (it originally mapped
+ * to brand-navy-950, which is literally the panel's own background color and
+ * made every outline invisible - fixed), main shape -> accent-500, one minor
+ * detail -> accent-400. Converted to JSX via @svgr/cli with SVGO disabled so
+ * the id attributes the animation CSS in globals.css targets (e.g.
+ * #freepik--Airplane--inject-62) are preserved byte-for-byte.
  *
  * Animation: the root <svg> already carries className="animated" (baked in
  * by the Storyset export) so the shake keyframe in globals.css runs
@@ -1567,8 +1570,8 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
       <path
         d="M379.11,161.88a11.21,11.21,0,0,0-11.21,11.21c0,5.6,10.34,18.78,10.34,18.78h.87s11.22-12.58,11.22-18.78A11.21,11.21,0,0,0,379.11,161.88Zm0,16.69a5.48,5.48,0,1,1,5.48-5.48A5.47,5.47,0,0,1,379.11,178.57Z"
         style={{
-          fill: "#0A1628",
-          stroke: "#0A1628",
+          fill: "#FFFFFF",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "379.115px 176.875px",
@@ -1579,8 +1582,8 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
       <path
         d="M129,252.33a6.21,6.21,0,0,0-6.21,6.22c0,3.1,5.73,10.41,5.73,10.41H129s6.22-7,6.22-10.41A6.21,6.21,0,0,0,129,252.33Zm0,9.25a3,3,0,1,1,3-3A3,3,0,0,1,129,261.58Z"
         style={{
-          fill: "#0A1628",
-          stroke: "#0A1628",
+          fill: "#FFFFFF",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "129.005px 260.645px",
@@ -1591,8 +1594,8 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
       <path
         d="M317.4,167.54a6.81,6.81,0,0,0-6.81,6.81c0,3.39,6.28,11.39,6.28,11.39h.53s6.8-7.63,6.8-11.39A6.8,6.8,0,0,0,317.4,167.54Zm0,10.13a3.33,3.33,0,1,1,3.32-3.32A3.33,3.33,0,0,1,317.4,177.67Z"
         style={{
-          fill: "#0A1628",
-          stroke: "#0A1628",
+          fill: "#FFFFFF",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "317.395px 176.64px",
@@ -1603,8 +1606,8 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
       <path
         d="M154.66,294.31a5.09,5.09,0,0,0-5.09,5.1c0,2.53,4.69,8.52,4.69,8.52h.4s5.09-5.71,5.09-8.52A5.09,5.09,0,0,0,154.66,294.31Zm0,7.58a2.49,2.49,0,1,1,2.49-2.48A2.49,2.49,0,0,1,154.66,301.89Z"
         style={{
-          fill: "#0A1628",
-          stroke: "#0A1628",
+          fill: "#FFFFFF",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "154.66px 301.12px",
@@ -1615,8 +1618,8 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
       <path
         d="M365.5,223.84a6.8,6.8,0,0,0-6.81,6.8c0,3.4,6.28,11.4,6.28,11.4h.53s6.8-7.64,6.8-11.4A6.8,6.8,0,0,0,365.5,223.84Zm0,10.13a3.33,3.33,0,1,1,3.32-3.33A3.33,3.33,0,0,1,365.5,234Z"
         style={{
-          fill: "#0A1628",
-          stroke: "#0A1628",
+          fill: "#FFFFFF",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "365.495px 232.94px",
@@ -1627,8 +1630,8 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
       <path
         d="M397.43,293.13a6.81,6.81,0,0,0-6.81,6.81c0,3.4,6.28,11.4,6.28,11.4h.53s6.8-7.64,6.8-11.4A6.8,6.8,0,0,0,397.43,293.13Zm0,10.13a3.32,3.32,0,1,1,3.32-3.32A3.32,3.32,0,0,1,397.43,303.26Z"
         style={{
-          fill: "#0A1628",
-          stroke: "#0A1628",
+          fill: "#FFFFFF",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "397.425px 302.235px",
@@ -1639,8 +1642,8 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
       <path
         d="M126.34,213.62a6.81,6.81,0,0,0-6.8,6.81c0,3.39,6.28,11.4,6.28,11.4h.52s6.81-7.64,6.81-11.4A6.81,6.81,0,0,0,126.34,213.62Zm0,10.13a3.32,3.32,0,1,1,3.33-3.32A3.32,3.32,0,0,1,126.34,223.75Z"
         style={{
-          fill: "#0A1628",
-          stroke: "#0A1628",
+          fill: "#FFFFFF",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "126.345px 222.725px",
@@ -1651,8 +1654,8 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
       <path
         d="M260.64,163.44a6.8,6.8,0,0,0-6.8,6.8c0,3.4,6.28,11.4,6.28,11.4h.52s6.81-7.64,6.81-11.4A6.8,6.8,0,0,0,260.64,163.44Zm0,10.13a3.33,3.33,0,1,1,3.33-3.33A3.33,3.33,0,0,1,260.64,173.57Z"
         style={{
-          fill: "#0A1628",
-          stroke: "#0A1628",
+          fill: "#FFFFFF",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "260.645px 172.54px",
@@ -1663,8 +1666,8 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
       <path
         d="M78.27,168.24a6.81,6.81,0,0,0-6.81,6.81c0,3.39,6.28,11.4,6.28,11.4h.53s6.8-7.64,6.8-11.4A6.8,6.8,0,0,0,78.27,168.24Zm0,10.13a3.32,3.32,0,1,1,3.32-3.32A3.33,3.33,0,0,1,78.27,178.37Z"
         style={{
-          fill: "#0A1628",
-          stroke: "#0A1628",
+          fill: "#FFFFFF",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "78.265px 177.345px",
@@ -1676,7 +1679,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         d="M53,343.05c0-109.91,90-199,201-199s201,89.09,201,199"
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           strokeDasharray: 3,
           transformOrigin: "254px 243.55px",
@@ -1699,7 +1702,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         height={77.7}
         style={{
           fill: "rgb(255, 255, 255)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "421.23px 381.69px",
         }}
@@ -1712,8 +1715,8 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         width={97.24}
         height={14.33}
         style={{
-          fill: "#0A1628",
-          stroke: "#0A1628",
+          fill: "#FFFFFF",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "421.23px 388.645px",
         }}
@@ -1726,8 +1729,8 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         width={12.26}
         height={27.4}
         style={{
-          fill: "#0A1628",
-          stroke: "#0A1628",
+          fill: "#FFFFFF",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "421.23px 406.85px",
         }}
@@ -1741,7 +1744,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         height={15.67}
         style={{
           fill: "rgb(255, 255, 255)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "421.225px 402.315px",
         }}
@@ -1755,7 +1758,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         height={33.97}
         style={{
           fill: "#3E7BFA",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "421.225px 356.425px",
         }}
@@ -1766,7 +1769,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         points="443.1 374.69 443.1 350.72 420.38 333.5 399.36 350.72 399.36 374.69"
         style={{
           fill: "rgb(255, 255, 255)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "421.23px 354.095px",
         }}
@@ -1780,7 +1783,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         height={17.83}
         style={{
           fill: "rgb(255, 255, 255)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "421.225px 364.075px",
         }}
@@ -1794,7 +1797,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         height={17.83}
         style={{
           fill: "rgb(255, 255, 255)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "421.23px 364.075px",
         }}
@@ -1808,7 +1811,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         height={17.83}
         style={{
           fill: "rgb(255, 255, 255)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "421.23px 364.075px",
         }}
@@ -1822,7 +1825,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         y2={372.93}
         style={{
           fill: "rgb(255, 255, 255)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "420.71px 364.15px",
         }}
@@ -1836,7 +1839,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         y2={358.95}
         style={{
           fill: "rgb(255, 255, 255)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "421.28px 358.95px",
         }}
@@ -1850,7 +1853,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         y2={362.46}
         style={{
           fill: "rgb(255, 255, 255)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "421.28px 362.46px",
         }}
@@ -1864,7 +1867,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         y2={365.96}
         style={{
           fill: "rgb(255, 255, 255)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "421.28px 365.96px",
         }}
@@ -1878,7 +1881,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         y2={369.47}
         style={{
           fill: "rgb(255, 255, 255)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "421.28px 369.47px",
         }}
@@ -1892,7 +1895,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         height={27.4}
         style={{
           fill: "rgb(255, 255, 255)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "432.925px 406.85px",
         }}
@@ -1906,7 +1909,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         y2={420.48}
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "432.93px 406.98px",
         }}
@@ -1920,7 +1923,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         y2={402.32}
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "432.905px 402.32px",
         }}
@@ -1934,7 +1937,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         y2={412.68}
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "432.905px 412.68px",
         }}
@@ -1948,7 +1951,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         height={27.4}
         style={{
           fill: "rgb(255, 255, 255)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "408.925px 406.85px",
         }}
@@ -1962,7 +1965,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         y2={420.48}
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "408.93px 406.98px",
         }}
@@ -1976,7 +1979,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         y2={402.32}
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "408.905px 402.32px",
         }}
@@ -1990,7 +1993,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         y2={412.68}
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "408.905px 412.68px",
         }}
@@ -2004,7 +2007,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         height={21}
         style={{
           fill: "rgb(255, 255, 255)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "454.695px 403.32px",
         }}
@@ -2018,7 +2021,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         height={21}
         style={{
           fill: "rgb(255, 255, 255)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "454.695px 403.32px",
         }}
@@ -2032,7 +2035,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         y2={398.07}
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "454.56px 398.07px",
         }}
@@ -2046,7 +2049,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         y2={403.43}
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "454.56px 403.43px",
         }}
@@ -2060,7 +2063,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         y2={408.79}
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "454.56px 408.79px",
         }}
@@ -2074,7 +2077,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         height={21}
         style={{
           fill: "rgb(255, 255, 255)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "386.355px 403.32px",
         }}
@@ -2088,7 +2091,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         height={21}
         style={{
           fill: "rgb(255, 255, 255)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "386.365px 403.32px",
         }}
@@ -2102,7 +2105,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         y2={398.07}
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "386.23px 398.07px",
         }}
@@ -2116,7 +2119,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         y2={403.43}
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "386.23px 403.43px",
         }}
@@ -2130,7 +2133,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         y2={408.79}
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "386.23px 408.79px",
         }}
@@ -2141,7 +2144,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         points="395.36 353.82 420.38 333.5 446.36 353.15"
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           strokeWidth: 2,
           transformOrigin: "420.86px 343.66px",
@@ -2156,7 +2159,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         height={4.06}
         style={{
           fill: "rgb(255, 255, 255)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "421.235px 418.51px",
         }}
@@ -2170,7 +2173,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         height={2.31}
         style={{
           fill: "rgb(255, 255, 255)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "421.235px 419.395px",
         }}
@@ -2184,7 +2187,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         height={38.06}
         style={{
           fill: "rgb(255, 255, 255)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "401.525px 401.51px",
         }}
@@ -2198,7 +2201,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         height={38.06}
         style={{
           fill: "rgb(255, 255, 255)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "442.195px 401.51px",
         }}
@@ -2212,7 +2215,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         height={9.77}
         style={{
           fill: "#3E7BFA",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "421.225px 384.665px",
         }}
@@ -2234,7 +2237,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         height={81.13}
         style={{
           fill: "#3E7BFA",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "80.39px 379.985px",
@@ -2248,8 +2251,8 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         width={95.88}
         height={28.18}
         style={{
-          fill: "#0A1628",
-          stroke: "#0A1628",
+          fill: "#FFFFFF",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "80.39px 406.46px",
@@ -2264,7 +2267,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         height={58.82}
         style={{
           fill: "rgb(255, 255, 255)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "80.39px 391.13px",
@@ -2279,7 +2282,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         height={27.62}
         style={{
           fill: "rgb(255, 255, 255)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "79.855px 375.53px",
@@ -2294,7 +2297,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         height={27.62}
         style={{
           fill: "rgb(255, 255, 255)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "79.855px 404.97px",
@@ -2306,7 +2309,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         d="M94.65,390.66a1.92,1.92,0,1,1-1.92-1.92A1.92,1.92,0,0,1,94.65,390.66Z"
         style={{
           fill: "rgb(255, 255, 255)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "92.73px 390.66px",
@@ -2321,7 +2324,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         y2={382}
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           strokeWidth: "0.5px",
@@ -2337,7 +2340,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         y2={385.02}
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           strokeWidth: "0.5px",
@@ -2353,7 +2356,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         y2={408.61}
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           strokeWidth: "0.5px",
@@ -2369,7 +2372,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         y2={411.64}
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           strokeWidth: "0.5px",
@@ -2385,7 +2388,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         height={34.88}
         style={{
           fill: "rgb(255, 255, 255)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "114.105px 379.16px",
@@ -2400,7 +2403,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         y2={382.81}
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           strokeWidth: "0.5px",
@@ -2416,7 +2419,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         y2={385.83}
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           strokeWidth: "0.5px",
@@ -2432,7 +2435,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         height={34.88}
         style={{
           fill: "rgb(255, 255, 255)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "46.155px 379.16px",
@@ -2447,7 +2450,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         y2={382.81}
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           strokeWidth: "0.5px",
@@ -2463,7 +2466,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         y2={385.83}
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           strokeWidth: "0.5px",
@@ -2505,7 +2508,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         d="M28.55,352.62H39.09a0,0,0,0,1,0,0v9.08a5,5,0,0,1-5,5h-.46a5,5,0,0,1-5-5v-9.08a0,0,0,0,1,0,0Z"
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "33.82px 359.66px",
@@ -2517,7 +2520,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         d="M38.86,352.62H49.39a0,0,0,0,1,0,0v9.08a5,5,0,0,1-5,5h-.46a5,5,0,0,1-5-5v-9.08A0,0,0,0,1,38.86,352.62Z"
         style={{
           fill: "rgb(178, 178, 178)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "44.125px 359.66px",
@@ -2558,7 +2561,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         d="M49.16,352.62H59.7a0,0,0,0,1,0,0v9.08a5,5,0,0,1-5,5H54.2a5,5,0,0,1-5-5v-9.08A0,0,0,0,1,49.16,352.62Z"
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "54.43px 359.66px",
@@ -2570,7 +2573,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         d="M59.47,352.62H70a0,0,0,0,1,0,0v9.08a5,5,0,0,1-5,5H64.5a5,5,0,0,1-5-5v-9.08a0,0,0,0,1,0,0Z"
         style={{
           fill: "rgb(178, 178, 178)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "64.735px 359.66px",
@@ -2611,7 +2614,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         d="M69.77,352.62H80.31a0,0,0,0,1,0,0v9.08a5,5,0,0,1-5,5h-.46a5,5,0,0,1-5-5v-9.08A0,0,0,0,1,69.77,352.62Z"
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "75.04px 359.66px",
@@ -2623,7 +2626,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         d="M80.07,352.62H90.61a0,0,0,0,1,0,0v9.08a5,5,0,0,1-5,5h-.46a5,5,0,0,1-5-5v-9.08A0,0,0,0,1,80.07,352.62Z"
         style={{
           fill: "rgb(178, 178, 178)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "85.34px 359.66px",
@@ -2664,7 +2667,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         d="M90.38,352.62h10.54a0,0,0,0,1,0,0v9.08a5,5,0,0,1-5,5h-.46a5,5,0,0,1-5-5v-9.08A0,0,0,0,1,90.38,352.62Z"
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "95.65px 359.66px",
@@ -2676,7 +2679,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         d="M100.68,352.62h10.54a0,0,0,0,1,0,0v9.09a5,5,0,0,1-5,5h-.46a5,5,0,0,1-5-5v-9.09A0,0,0,0,1,100.68,352.62Z"
         style={{
           fill: "rgb(178, 178, 178)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "105.95px 359.665px",
@@ -2717,7 +2720,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         d="M111,352.62h10.54a0,0,0,0,1,0,0v9.09a5,5,0,0,1-5,5H116a5,5,0,0,1-5-5v-9.08A0,0,0,0,1,111,352.62Z"
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "116.27px 359.665px",
@@ -2729,7 +2732,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         d="M121.29,352.62h10.54a0,0,0,0,1,0,0v9.08a5,5,0,0,1-5,5h-.46a5,5,0,0,1-5-5v-9.09A0,0,0,0,1,121.29,352.62Z"
         style={{
           fill: "rgb(178, 178, 178)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "126.56px 359.655px",
@@ -2744,7 +2747,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         height={14.12}
         style={{
           fill: "#3E7BFA",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "33.82px 346.22px",
@@ -2759,7 +2762,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         height={14.12}
         style={{
           fill: "rgb(255, 255, 255)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "44.13px 346.22px",
@@ -2774,7 +2777,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         height={14.12}
         style={{
           fill: "#3E7BFA",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "54.43px 346.22px",
@@ -2789,7 +2792,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         height={14.12}
         style={{
           fill: "rgb(255, 255, 255)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "64.74px 346.22px",
@@ -2804,7 +2807,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         height={14.12}
         style={{
           fill: "#3E7BFA",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "75.04px 346.22px",
@@ -2819,7 +2822,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         height={14.12}
         style={{
           fill: "rgb(255, 255, 255)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "85.34px 346.22px",
@@ -2834,7 +2837,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         height={14.12}
         style={{
           fill: "#3E7BFA",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "95.65px 346.22px",
@@ -2849,7 +2852,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         height={14.12}
         style={{
           fill: "rgb(255, 255, 255)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "105.95px 346.22px",
@@ -2864,7 +2867,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         height={14.12}
         style={{
           fill: "#3E7BFA",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "116.26px 346.22px",
@@ -2879,7 +2882,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         height={14.12}
         style={{
           fill: "rgb(255, 255, 255)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "126.56px 346.22px",
@@ -2898,7 +2901,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
       <path
         d="M288.85,101.47a3.1,3.1,0,0,0,2.93-3.11h0a3.75,3.75,0,0,0-3.61-3.7l-16.32-.47-.34,0-7-9.13,2.55-.19a1.56,1.56,0,0,0,1.48-1.43,1.53,1.53,0,0,0-1.58-1.6l-4.75.19L257,75.18l3.55-.25A1.52,1.52,0,0,0,262,73.41h0a.9.9,0,0,0-.68-1.54l-6.61.26-3.47-4.55a7.15,7.15,0,0,0-5.4-2.82l-1.7-.06,7.56,15.93s5,10.18,1.15,14.6l-18.42,1-.24,0-7.39-9.65-4.37-.44L226,97.55l-2,.32a.18.18,0,0,0,0,.36l2.23.54-3.74,11.65,4.83-.25,6.42-9.56.42.1,16.9.73c2.19.74,5.43,2.53,4.28,6.51-1.69,5.87-11,24.3-11,24.3l2.85-.47a7.44,7.44,0,0,0,4.68-2.79l3.3-4.26,5.45-.39A1.57,1.57,0,0,0,262,122.9a1.51,1.51,0,0,0-1.58-1.59l-2.78.11,4.85-6.27,5.45-.39a1.56,1.56,0,0,0,1.48-1.43,1.53,1.53,0,0,0-1.58-1.6l-2.79.11,7.37-9.51Z"
         style={{
-          fill: "#0A1628",
+          fill: "#FFFFFF",
           transformOrigin: "257.105px 98.475px",
         }}
         id="elspfse2fsfsh"
@@ -2916,7 +2919,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         points="189.58 221.85 212.61 205.5 197.83 180.52 118.93 164.76 110.67 206.09 189.58 221.85"
         style={{
           fill: "rgb(255, 255, 255)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "161.64px 193.305px",
         }}
@@ -2926,7 +2929,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
       <path
         d="M129.17,179l2.6.52-.37,1.83-2.6-.52-1.07,5.29-2-.4,2.58-12.83,5.33,1.08-.37,1.83-3.31-.67Z"
         style={{
-          fill: "#0A1628",
+          fill: "#FFFFFF",
           transformOrigin: "129.685px 179.505px",
         }}
         id="elgrxx69r4pv5"
@@ -2935,7 +2938,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
       <path
         d="M136.53,187.91a4.1,4.1,0,0,1,.13-1.62l.41-2c.24-1.19-.08-1.71-1-1.9l-.7-.14-1,5.22-2-.4,2.58-12.83,3,.61c2.09.42,2.79,1.58,2.39,3.55l-.2,1c-.27,1.32-.86,2.1-1.84,2.34.92.62,1.05,1.66.78,3l-.39,2a3.87,3.87,0,0,0-.1,1.6Zm0-11.44-.8,3.94.79.16c.75.15,1.27-.09,1.48-1.11l.26-1.27c.18-.92-.05-1.38-.76-1.53Z"
         style={{
-          fill: "#0A1628",
+          fill: "#FFFFFF",
           transformOrigin: "136.409px 181.29px",
         }}
         id="ele9vl229p8aj"
@@ -2944,7 +2947,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
       <path
         d="M143.49,181.58l2.76.56-.37,1.83-2.76-.55-.76,3.75,3.48.7-.37,1.84L140,188.6l2.58-12.83,5.5,1.11-.37,1.83-3.48-.7Z"
         style={{
-          fill: "#0A1628",
+          fill: "#FFFFFF",
           transformOrigin: "144.04px 182.74px",
         }}
         id="elthfsyng7qu"
@@ -2953,7 +2956,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
       <path
         d="M150.52,183l2.77.56-.37,1.83-2.77-.56-.75,3.76,3.48.7-.37,1.83L147,190l2.58-12.83,5.49,1.11-.36,1.83-3.49-.7Z"
         style={{
-          fill: "#0A1628",
+          fill: "#FFFFFF",
           transformOrigin: "151.035px 184.145px",
         }}
         id="el0d08jt1uoaur"
@@ -2962,7 +2965,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
       <path
         d="M127.69,190c2,.39,2.73,1.77,2.31,3.82l-.08.4-1.9-.38.11-.53c.18-.92-.12-1.34-.76-1.47s-1.08.15-1.26,1.06c-.53,2.64,3.31,3.93,2.57,7.59-.41,2.06-1.68,3-3.66,2.62s-2.76-1.77-2.35-3.83l.16-.78,1.9.38-.18.92c-.18.91.15,1.32.79,1.45s1.11-.12,1.3-1c.53-2.64-3.31-3.93-2.57-7.6C124.48,190.54,125.72,189.57,127.69,190Z"
         style={{
-          fill: "#0A1628",
+          fill: "#FFFFFF",
           transformOrigin: "126.339px 196.546px",
         }}
         id="el1mmac74olr9"
@@ -2971,7 +2974,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
       <path
         d="M131.52,204.24l-2-.41L132.09,191l2,.4-1.11,5.5,2.29.46,1.11-5.5,2,.42-2.58,12.82-2.05-.41,1.1-5.5-2.29-.46Z"
         style={{
-          fill: "#0A1628",
+          fill: "#FFFFFF",
           transformOrigin: "133.95px 198.05px",
         }}
         id="el86tjhfahtf7"
@@ -2980,7 +2983,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
       <path
         d="M140.21,192.64l2,.41-2.59,12.82-2-.4Z"
         style={{
-          fill: "#0A1628",
+          fill: "#FFFFFF",
           transformOrigin: "139.915px 199.255px",
         }}
         id="elvpd76khbah"
@@ -2989,7 +2992,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
       <path
         d="M149.32,197.77l-.33,1.67c-.42,2.05-1.63,3-3.65,2.57l-1-.19-1,4.81-2-.4L144,193.4l3,.6C149,194.41,149.73,195.72,149.32,197.77Zm-3.69-2.13-.87,4.34,1,.19c.64.13,1-.09,1.24-1l.38-1.92c.19-.92-.1-1.28-.74-1.41Z"
         style={{
-          fill: "#0A1628",
+          fill: "#FFFFFF",
           transformOrigin: "145.385px 200.015px",
         }}
         id="elge4oxeat7v"
@@ -2998,7 +3001,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
       <path
         d="M156.52,199.23l-.33,1.66c-.42,2.05-1.63,3-3.65,2.57l-.95-.19-1,4.81-2-.4,2.58-12.83,3,.6C156.17,195.86,156.94,197.17,156.52,199.23Zm-3.68-2.14-.88,4.34.95.2c.65.12,1.05-.1,1.24-1l.38-1.92c.19-.92-.1-1.28-.74-1.41Z"
         style={{
-          fill: "#0A1628",
+          fill: "#FFFFFF",
           transformOrigin: "152.61px 201.465px",
         }}
         id="elm611fra3ow"
@@ -3007,7 +3010,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
       <path
         d="M158.39,196.3l2,.41-2.58,12.83-2-.41Z"
         style={{
-          fill: "#0A1628",
+          fill: "#FFFFFF",
           transformOrigin: "158.1px 202.92px",
         }}
         id="elt2lu0a7xv9s"
@@ -3016,7 +3019,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
       <path
         d="M163.25,201l-1.87,9.29-1.81-.36,2.58-12.83,2.53.51.52,8.09,1.55-7.67,1.79.36L166,211.17l-2.07-.41Z"
         style={{
-          fill: "#0A1628",
+          fill: "#FFFFFF",
           transformOrigin: "164.055px 204.135px",
         }}
         id="elvbkhtj6c8ra"
@@ -3025,7 +3028,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
       <path
         d="M172.17,205l2.82.56-.82,4.07c-.41,2.06-1.68,3-3.66,2.62s-2.77-1.78-2.35-3.83l1.34-6.67c.41-2.05,1.68-3,3.66-2.62s2.77,1.78,2.35,3.83l-.25,1.25-1.9-.38.27-1.38c.19-.92-.15-1.34-.79-1.47s-1.11.13-1.3,1.05L170.15,209c-.19.91.15,1.32.79,1.45s1.11-.12,1.3-1l.47-2.37-.91-.18Z"
         style={{
-          fill: "#0A1628",
+          fill: "#FFFFFF",
           transformOrigin: "171.835px 205.69px",
         }}
         id="elsmi4p4k5m9b"
@@ -3035,7 +3038,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         d="M212.61,205.5s2.79,8.81,15.4,8.81,11.09-8.57,35.8-10.59,39.34,23.7,39.34,23.7"
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "257.88px 215.513px",
         }}
@@ -3049,7 +3052,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         height={90.03}
         style={{
           fill: "#3E7BFA",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "251.575px 315.025px",
@@ -3061,7 +3064,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         points="320.99 270.01 182.16 270.01 204.88 227.65 343.71 227.65 320.99 270.01"
         style={{
           fill: "#3E7BFA",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "262.935px 248.83px",
@@ -3076,7 +3079,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         y2={248.32}
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "194.78px 248.32px",
         }}
@@ -3090,7 +3093,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         y2={248.32}
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           strokeDasharray: "1.97734, 1.97734",
           transformOrigin: "263.985px 248.32px",
@@ -3105,7 +3108,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         y2={248.32}
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "332.21px 248.32px",
         }}
@@ -3145,7 +3148,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         points="343.71 227.65 343.71 316.23 320.99 360.05 320.99 270.01 343.71 227.65"
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           transformOrigin: "332.35px 293.85px",
@@ -3157,7 +3160,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         points="238.58 270.01 258.42 270.01 279.75 227.65 259.92 227.65 238.58 270.01"
         style={{
           fill: "rgb(255, 255, 255)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "259.165px 248.83px",
         }}
@@ -3168,7 +3171,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         points="258.56 307.57 248.82 300.54 238.58 307.57 238.58 270.01 258.56 270.01 258.56 307.57"
         style={{
           fill: "rgb(255, 255, 255)",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "248.57px 288.79px",
         }}
@@ -3182,7 +3185,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         y2={228.43}
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "171.78px 228.43px",
         }}
@@ -3196,7 +3199,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         y2={228.43}
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "189.935px 228.43px",
         }}
@@ -3210,7 +3213,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         y2={269.28}
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "164.47px 269.28px",
         }}
@@ -3224,7 +3227,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         y2={309.62}
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "151.105px 309.62px",
         }}
@@ -3238,7 +3241,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         y2={309.62}
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "169.26px 309.62px",
         }}
@@ -3252,7 +3255,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         y2={286.93}
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "172.535px 286.93px",
         }}
@@ -3266,7 +3269,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         y2={241.04}
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "187.165px 241.04px",
         }}
@@ -3280,7 +3283,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         y2={342.9}
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "172.535px 342.9px",
         }}
@@ -3302,7 +3305,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
         y2={420.55}
         style={{
           fill: "none",
-          stroke: "#0A1628",
+          stroke: "#FFFFFF",
           strokeMiterlimit: 10,
           transformOrigin: "248.5px 420.55px",
         }}
@@ -3350,7 +3353,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
           d="M28.55,352.62H39.09a0,0,0,0,1,0,0v9.08a5,5,0,0,1-5,5h-.46a5,5,0,0,1-5-5v-9.08a0,0,0,0,1,0,0Z"
           style={{
             fill: "#6996FB",
-            stroke: "#0A1628",
+            stroke: "#FFFFFF",
             strokeLinecap: "round",
             strokeLinejoin: "round",
           }}
@@ -3361,7 +3364,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
           d="M49.16,352.62H59.7a0,0,0,0,1,0,0v9.08a5,5,0,0,1-5,5H54.2a5,5,0,0,1-5-5v-9.08A0,0,0,0,1,49.16,352.62Z"
           style={{
             fill: "#6996FB",
-            stroke: "#0A1628",
+            stroke: "#FFFFFF",
             strokeLinecap: "round",
             strokeLinejoin: "round",
           }}
@@ -3372,7 +3375,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
           d="M69.77,352.62H80.31a0,0,0,0,1,0,0v9.08a5,5,0,0,1-5,5h-.46a5,5,0,0,1-5-5v-9.08A0,0,0,0,1,69.77,352.62Z"
           style={{
             fill: "#6996FB",
-            stroke: "#0A1628",
+            stroke: "#FFFFFF",
             strokeLinecap: "round",
             strokeLinejoin: "round",
           }}
@@ -3383,7 +3386,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
           d="M90.38,352.62h10.54a0,0,0,0,1,0,0v9.08a5,5,0,0,1-5,5h-.46a5,5,0,0,1-5-5v-9.08A0,0,0,0,1,90.38,352.62Z"
           style={{
             fill: "#6996FB",
-            stroke: "#0A1628",
+            stroke: "#FFFFFF",
             strokeLinecap: "round",
             strokeLinejoin: "round",
           }}
@@ -3394,7 +3397,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
           d="M111,352.62h10.54a0,0,0,0,1,0,0v9.09a5,5,0,0,1-5,5H116a5,5,0,0,1-5-5v-9.08A0,0,0,0,1,111,352.62Z"
           style={{
             fill: "#6996FB",
-            stroke: "#0A1628",
+            stroke: "#FFFFFF",
             strokeLinecap: "round",
             strokeLinejoin: "round",
           }}
@@ -3405,7 +3408,7 @@ export function AuthIllustration({ className, ...props }: SVGProps<SVGSVGElement
           points="343.71 227.65 343.71 316.23 320.99 360.05 320.99 270.01 343.71 227.65"
           style={{
             fill: "#6996FB",
-            stroke: "#0A1628",
+            stroke: "#FFFFFF",
             strokeLinecap: "round",
             strokeLinejoin: "round",
           }}

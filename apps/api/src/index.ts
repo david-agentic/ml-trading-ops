@@ -2,6 +2,7 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 import { requestId } from 'hono/request-id';
+import { errorResponse } from './lib/errors';
 import { dbMiddleware } from './middleware/db';
 import { authFloodGuard } from './middleware/nativeRateLimit';
 import { authRoutes } from './routes/auth';
@@ -9,6 +10,19 @@ import { userRoutes } from './routes/users';
 import type { AppEnv } from './types';
 
 const app = new Hono<AppEnv>();
+
+// Without this, any uncaught exception anywhere in the request pipeline
+// falls through to Hono's default handler, which returns a plain-text
+// "Internal Server Error" body - not JSON, so every client-side caller
+// expecting { error: { code, message } } breaks on top of the original
+// failure (surfaced as apps/web's generic "Something went wrong" catch-all).
+// Rule 4 (CLAUDE.md §18): never leak internals to the client, so the
+// message stays generic and err only goes to the server-side console.
+app.onError((err, c) => {
+  // eslint-disable-next-line no-console
+  console.error('[unhandled]', err);
+  return errorResponse(c, 500, 'INTERNAL_ERROR', 'Something went wrong. Please try again.');
+});
 
 app.use('*', requestId());
 app.use('*', logger());
