@@ -14,6 +14,24 @@ import { buildAuditLogInsert } from '../audit';
 const SUPER_ADMIN_EMAIL = 'daoodtaxexpertllc@gmail.com';
 const SUPER_ADMIN_NAME = 'Muhammad Daood';
 
+/**
+ * Must match packages/shared/src/crypto/password.ts's ARGON2_MEMORY_SIZE_KIB.
+ * Argon2's PHC-encoded hash format embeds the parameters it was hashed with
+ * (`$argon2id$v=19$m=<memory>,t=<iterations>,p=<parallelism>$...`) - verifyPassword
+ * reads them from the stored hash itself, not from the current code's constants.
+ * That means lowering ARGON2_MEMORY_SIZE_KIB (done to fix a production 500 caused
+ * by the old params exceeding the Workers Free plan's CPU budget) does nothing for
+ * *already-hashed* passwords - seedSuperAdmin used to unconditionally skip if the
+ * user already existed, which would have left the Super Admin permanently stuck on
+ * the old, over-budget parameters. This detects that mismatch and re-hashes.
+ */
+const CURRENT_ARGON2_MEMORY_KIB = 256;
+
+function argon2MemoryParam(encodedHash: string): number | null {
+  const match = encodedHash.match(/\$m=(\d+),/);
+  return match?.[1] ? parseInt(match[1], 10) : null;
+}
+
 async function seedRoles(db: ReturnType<typeof createDb>) {
   const roleIdByKey = new Map<string, string>();
 
@@ -50,15 +68,50 @@ async function seedPermissions(db: ReturnType<typeof createDb>, superAdminRoleId
 }
 
 async function seedSuperAdmin(db: ReturnType<typeof createDb>, superAdminRoleId: string) {
-  const existing = await db
-    .select({ id: users.id })
+  const [row] = await db
+    .select({ id: users.id, passwordHash: users.passwordHash })
     .from(users)
     .where(eq(users.email, SUPER_ADMIN_EMAIL))
     .limit(1);
 
-  if (existing.length > 0) {
+  if (row) {
+    if (argon2MemoryParam(row.passwordHash) === CURRENT_ARGON2_MEMORY_KIB) {
+      // eslint-disable-next-line no-console
+      console.log(`Super Admin (${SUPER_ADMIN_EMAIL}) already exists — skipped, no password reset.`);
+      return;
+    }
+
+    // Existing hash predates the CPU-budget fix - regenerate with a fresh temp
+    // password so it's re-hashed under the current (cheaper) Argon2id params.
+    // The previous temp password stops working; this mirrors first-creation UX
+    // (console-logged once, "change on first login") since nobody has
+    // successfully logged in with it yet.
+    const tempPassword = generateTempPassword();
+    const passwordHash = await hashPassword(tempPassword);
+    await db.update(users).set({ passwordHash, updatedAt: new Date() }).where(eq(users.id, row.id));
+    await buildAuditLogInsert(db, {
+      actorUserId: null,
+      actorRole: null,
+      actorEmail: null,
+      action: 'update',
+      resourceType: 'user',
+      resourceId: row.id,
+      reason: 'Password re-hashed with updated Argon2id parameters (Workers CPU-budget fix)',
+      relatedModule: 'system',
+    });
+
     // eslint-disable-next-line no-console
-    console.log(`Super Admin (${SUPER_ADMIN_EMAIL}) already exists — skipped, no password reset.`);
+    console.log('='.repeat(60));
+    // eslint-disable-next-line no-console
+    console.log('Super Admin password re-hashed (Argon2id parameters updated):');
+    // eslint-disable-next-line no-console
+    console.log(`  Email:    ${SUPER_ADMIN_EMAIL}`);
+    // eslint-disable-next-line no-console
+    console.log(`  Password: ${tempPassword}`);
+    // eslint-disable-next-line no-console
+    console.log('  The previous temp password no longer works. Change this on first login.');
+    // eslint-disable-next-line no-console
+    console.log('='.repeat(60));
     return;
   }
 
