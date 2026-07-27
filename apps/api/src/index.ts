@@ -21,7 +21,13 @@ const app = new Hono<AppEnv>();
 app.onError((err, c) => {
   // eslint-disable-next-line no-console
   console.error('[unhandled]', err);
-  return errorResponse(c, 500, 'INTERNAL_ERROR', 'Something went wrong. Please try again.');
+  // TEMPORARY DEBUG: exposing err.message/stack to find the live /auth/login
+  // 500 with no other log access. Revert to the generic message immediately
+  // once diagnosed - never ship real error details to the client.
+  return c.json(
+    { error: { code: 'INTERNAL_ERROR', message: err.message, stack: err.stack } },
+    500,
+  );
 });
 
 app.use('*', requestId());
