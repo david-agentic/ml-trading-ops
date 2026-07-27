@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import type { ReactNode } from 'react';
-import { LogisticsIllustration } from '@/components/auth/LogisticsIllustration';
+import { AuthIllustration } from '@/components/brand/AuthIllustration';
 
 export const metadata: Metadata = {
   title: 'MLT Ops',
@@ -62,7 +62,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
             The complete B2B operations platform for modern distributors.
           </p>
           <div className="hidden lg:block">
-            <LogisticsIllustration />
+            <AuthIllustration className="h-auto w-[260px]" />
           </div>
         </div>
 

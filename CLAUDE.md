@@ -617,9 +617,11 @@ Base unit: 4px. All spacing multiples of 4.
 
 **Never:**
 - Cartoon characters
-- Stock illustrations from unDraw, Storyset, etc. (recognizable style)
+- Stock illustrations from unDraw, Storyset, etc. (recognizable style) — **unless owner-approved per-instance, see exception below**
 - Illustrations with human figures (dating problem — always look off after a year)
 - Emoji as illustration
+
+**Owner-approved exception (Phase 1, 2026-07-27):** the auth-hero illustration (shared across `/login`, `/forgot-password`, `/reset-password` via the `(auth)` route group layout) uses a recolored, animated Storyset/Freepik "free-shipping" SVG export instead of the hand-crafted monoline illustration described above. Recolored to the brand palette (navy `--brand-navy-950` + accent `--accent-500`, with `--accent-400` for one minor detail color); no human figures in the source asset. This is a scoped, explicit deviation for this one illustration, not a reopening of the general rule — new illustrations elsewhere in the product still default to the hand-crafted monoline/duotone style above unless separately approved. Component: `apps/web/components/brand/AuthIllustration.tsx`; animation CSS lives in `apps/web/app/globals.css`.
 
 ### 15.9 Component specifications
 
