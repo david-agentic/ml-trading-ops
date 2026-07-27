@@ -163,7 +163,7 @@
   }
 
   .dark {
-    /* Operational --text-*/--surface-* vars switch to dark values. Semantic
+    /* Operational --text-/--surface- vars switch to dark values. Semantic
        (success/warning/danger/info) and brand-navy/accent scales are
        unchanged across modes per §15.2. */
     --text-primary: var(--text-primary-dark);

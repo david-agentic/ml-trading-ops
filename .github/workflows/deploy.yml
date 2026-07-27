@@ -57,28 +57,14 @@ jobs:
         # the Super Admin user already exists. Safe to run on every deploy.
         run: pnpm db:seed
 
-      # Piped through tee + set -o pipefail (not just `run: cmd > log`) so the
-      # step's own exit code still reflects wrangler's failure - a plain
-      # redirect would still work here too, but tee also keeps output visible
-      # live in the step view.
+      # `pnpm dlx`, not `npx`: npx resolving a caret-range spec (`wrangler@^4`)
+      # inside this pnpm-managed workspace was failing instantly with
+      # "sh: 1: wrangler: not found" (exit 127) - a known class of npm/pnpm
+      # cache-interaction issue. pnpm dlx is the pnpm-native equivalent and
+      # doesn't hit it.
       - name: Deploy
         working-directory: apps/api
-        run: |
-          set -o pipefail
-          npx wrangler@^4 deploy ${{ steps.env.outputs.wrangler_env_flag }} 2>&1 | tee deploy-output.log
-
-      # Temporary diagnostic (Task 7 investigation): job-logs API access is
-      # 403'd for non-admins and the human log viewer is auth-gated even on
-      # this public repo, so this uploads the raw command output as a
-      # downloadable artifact instead. Remove once the exit-127 cause is
-      # found and fixed.
-      - name: Upload deploy log on failure
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: api-deploy-log
-          path: apps/api/deploy-output.log
-          retention-days: 7
+        run: pnpm dlx wrangler@^4 deploy ${{ steps.env.outputs.wrangler_env_flag }}
 
       # Runs after Deploy, not before: Cloudflare changed `secret put` (v3.78.5+,
       # carried into v4) to require the worker's latest version already be
@@ -95,9 +81,9 @@ jobs:
           JWT_SIGNING_KEY: ${{ secrets.JWT_SIGNING_KEY }}
           JWT_REFRESH_KEY: ${{ secrets.JWT_REFRESH_KEY }}
         run: |
-          echo "$DATABASE_URL" | npx wrangler@^4 secret put DATABASE_URL ${{ steps.env.outputs.wrangler_env_flag }}
-          echo "$JWT_SIGNING_KEY" | npx wrangler@^4 secret put JWT_SIGNING_KEY ${{ steps.env.outputs.wrangler_env_flag }}
-          echo "$JWT_REFRESH_KEY" | npx wrangler@^4 secret put JWT_REFRESH_KEY ${{ steps.env.outputs.wrangler_env_flag }}
+          echo "$DATABASE_URL" | pnpm dlx wrangler@^4 secret put DATABASE_URL ${{ steps.env.outputs.wrangler_env_flag }}
+          echo "$JWT_SIGNING_KEY" | pnpm dlx wrangler@^4 secret put JWT_SIGNING_KEY ${{ steps.env.outputs.wrangler_env_flag }}
+          echo "$JWT_REFRESH_KEY" | pnpm dlx wrangler@^4 secret put JWT_REFRESH_KEY ${{ steps.env.outputs.wrangler_env_flag }}
 
   deploy-web:
     name: Deploy Web
@@ -127,24 +113,11 @@ jobs:
             echo "wrangler_env_flag=" >> "$GITHUB_OUTPUT"
           fi
 
-      # See matching comment in deploy-api's Deploy step - same tee +
-      # pipefail diagnostic pattern.
       - name: Build
         working-directory: apps/web
-        run: |
-          set -o pipefail
-          pnpm run cf:build 2>&1 | tee build-output.log
+        run: pnpm run cf:build
 
-      # Temporary diagnostic (Task 7 investigation) - see matching step in
-      # deploy-api. Remove once the exit-1 cause is found and fixed.
-      - name: Upload build log on failure
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: web-build-log
-          path: apps/web/build-output.log
-          retention-days: 7
-
+      # pnpm dlx, not npx - see matching comment in deploy-api's Deploy step.
       - name: Deploy
         working-directory: apps/web
-        run: npx wrangler@^4 deploy ${{ steps.env.outputs.wrangler_env_flag }}
+        run: pnpm dlx wrangler@^4 deploy ${{ steps.env.outputs.wrangler_env_flag }}

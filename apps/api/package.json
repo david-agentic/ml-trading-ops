@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "npx wrangler@^4 dev",
-    "deploy": "npx wrangler@^4 deploy",
+    "dev": "pnpm dlx wrangler@^4 dev",
+    "deploy": "pnpm dlx wrangler@^4 deploy",
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --max-warnings=0",
     "test": "vitest run --passWithNoTests"
