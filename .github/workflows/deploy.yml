@@ -57,9 +57,28 @@ jobs:
         # the Super Admin user already exists. Safe to run on every deploy.
         run: pnpm db:seed
 
+      # Piped through tee + set -o pipefail (not just `run: cmd > log`) so the
+      # step's own exit code still reflects wrangler's failure - a plain
+      # redirect would still work here too, but tee also keeps output visible
+      # live in the step view.
       - name: Deploy
         working-directory: apps/api
-        run: npx wrangler@^4 deploy ${{ steps.env.outputs.wrangler_env_flag }}
+        run: |
+          set -o pipefail
+          npx wrangler@^4 deploy ${{ steps.env.outputs.wrangler_env_flag }} 2>&1 | tee deploy-output.log
+
+      # Temporary diagnostic (Task 7 investigation): job-logs API access is
+      # 403'd for non-admins and the human log viewer is auth-gated even on
+      # this public repo, so this uploads the raw command output as a
+      # downloadable artifact instead. Remove once the exit-127 cause is
+      # found and fixed.
+      - name: Upload deploy log on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-deploy-log
+          path: apps/api/deploy-output.log
+          retention-days: 7
 
       # Runs after Deploy, not before: Cloudflare changed `secret put` (v3.78.5+,
       # carried into v4) to require the worker's latest version already be
@@ -108,9 +127,23 @@ jobs:
             echo "wrangler_env_flag=" >> "$GITHUB_OUTPUT"
           fi
 
+      # See matching comment in deploy-api's Deploy step - same tee +
+      # pipefail diagnostic pattern.
       - name: Build
         working-directory: apps/web
-        run: pnpm run cf:build
+        run: |
+          set -o pipefail
+          pnpm run cf:build 2>&1 | tee build-output.log
+
+      # Temporary diagnostic (Task 7 investigation) - see matching step in
+      # deploy-api. Remove once the exit-1 cause is found and fixed.
+      - name: Upload build log on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-build-log
+          path: apps/web/build-output.log
+          retention-days: 7
 
       - name: Deploy
         working-directory: apps/web
