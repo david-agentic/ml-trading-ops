@@ -7,10 +7,15 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { Button } from '@/components/ui/button';
+import { BlurFadeIn } from '@/components/animate-ui/BlurFadeIn';
+import { RiseCard } from '@/components/animate-ui/RiseCard';
+import { ShimmerButton } from '@/components/animate-ui/ShimmerButton';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { ApiClientError, apiClient } from '@/lib/api-client';
+
+const CARD_CLASS =
+  '-mt-6 w-full max-w-[420px] rounded-lg border border-subtle bg-surface-card p-6 shadow-lg lg:mt-0 lg:shadow-md';
 
 // passwordResetConfirmSchema (packages/shared) only covers {token,
 // newPassword} — the confirm-match check is a form-only concern, so it's
@@ -54,20 +59,28 @@ function ResetPasswordForm() {
 
   if (!token) {
     return (
-      <div className="text-center">
-        <p className="text-body-sm font-medium text-danger-500">This reset link is missing its token.</p>
-        <Link href="/forgot-password" className="mt-4 inline-block text-body-sm text-accent-500 hover:underline">
-          Request a new reset link
-        </Link>
-      </div>
+      <RiseCard delay={0.1} className={CARD_CLASS}>
+        <div className="text-center">
+          <p className="text-body-sm font-medium text-danger-500">This reset link is missing its token.</p>
+          <Link href="/forgot-password" className="mt-4 inline-block text-body-sm text-accent-500 hover:underline">
+            Request a new reset link
+          </Link>
+        </div>
+      </RiseCard>
     );
   }
 
   return (
-    <>
-      <p className="text-eyebrow text-text-tertiary">RESET PASSWORD</p>
-      <h1 className="mt-1 text-h2 text-text-primary">Set a new password</h1>
-      <p className="mt-1 text-body-sm text-text-secondary">At least 10 characters, with a letter and a number.</p>
+    <RiseCard delay={0.1} className={CARD_CLASS}>
+      <BlurFadeIn as="p" delay={0.2}>
+        <p className="text-eyebrow text-text-tertiary">RESET PASSWORD</p>
+      </BlurFadeIn>
+      <BlurFadeIn as="p" delay={0.28}>
+        <h1 className="mt-1 text-h2 text-text-primary">Set a new password</h1>
+      </BlurFadeIn>
+      <BlurFadeIn as="p" delay={0.36}>
+        <p className="mt-1 text-body-sm text-text-secondary">At least 10 characters, with a letter and a number.</p>
+      </BlurFadeIn>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6 space-y-5" noValidate>
@@ -100,12 +113,18 @@ function ResetPasswordForm() {
 
           {submitError && <p className="text-body-sm font-medium text-danger-500">{submitError}</p>}
 
-          <Button type="submit" variant="primary" size="lg" className="w-full" disabled={submitting}>
+          <ShimmerButton
+            type="submit"
+            variant="primary"
+            size="lg"
+            className="w-full"
+            disabled={submitting}
+          >
             {submitting ? 'Saving…' : 'Save new password'}
-          </Button>
+          </ShimmerButton>
         </form>
       </Form>
-    </>
+    </RiseCard>
   );
 }
 

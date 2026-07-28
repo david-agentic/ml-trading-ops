@@ -6,7 +6,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Button } from '@/components/ui/button';
+import { BlurFadeIn } from '@/components/animate-ui/BlurFadeIn';
+import { RiseCard } from '@/components/animate-ui/RiseCard';
+import { ShimmerButton } from '@/components/animate-ui/ShimmerButton';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -67,10 +69,19 @@ export default function LoginPage() {
   }
 
   return (
-    <>
-      <p className="text-eyebrow text-text-tertiary">WELCOME BACK</p>
-      <h1 className="mt-1 text-h2 text-text-primary">Sign in to your account</h1>
-      <p className="mt-1 text-body-sm text-text-secondary">Enter your credentials to continue</p>
+    <RiseCard
+      delay={0.1}
+      className="-mt-6 w-full max-w-[420px] rounded-lg border border-subtle bg-surface-card p-6 shadow-lg lg:mt-0 lg:shadow-md"
+    >
+      <BlurFadeIn as="p" delay={0.2}>
+        <p className="text-eyebrow text-text-tertiary">WELCOME BACK</p>
+      </BlurFadeIn>
+      <BlurFadeIn as="p" delay={0.28}>
+        <h1 className="mt-1 text-h2 text-text-primary">Sign in to your account</h1>
+      </BlurFadeIn>
+      <BlurFadeIn as="p" delay={0.36}>
+        <p className="mt-1 text-body-sm text-text-secondary">Enter your credentials to continue</p>
+      </BlurFadeIn>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6 space-y-5" noValidate>
@@ -117,9 +128,15 @@ export default function LoginPage() {
 
           {submitError && <p className="text-body-sm font-medium text-danger-500">{submitError}</p>}
 
-          <Button type="submit" variant="primary" size="lg" className="w-full" disabled={submitting}>
+          <ShimmerButton
+            type="submit"
+            variant="primary"
+            size="lg"
+            className="w-full"
+            disabled={submitting}
+          >
             {submitting ? 'Signing in…' : 'Sign in'}
-          </Button>
+          </ShimmerButton>
         </form>
       </Form>
 
@@ -128,6 +145,6 @@ export default function LoginPage() {
           Forgot password?
         </Link>
       </div>
-    </>
+    </RiseCard>
   );
 }

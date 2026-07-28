@@ -5,7 +5,9 @@ import { passwordResetRequestSchema, type PasswordResetRequestInput } from '@ml-
 import Link from 'next/link';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Button } from '@/components/ui/button';
+import { BlurFadeIn } from '@/components/animate-ui/BlurFadeIn';
+import { RiseCard } from '@/components/animate-ui/RiseCard';
+import { ShimmerButton } from '@/components/animate-ui/ShimmerButton';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { apiClient } from '@/lib/api-client';
@@ -32,12 +34,21 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <>
-      <p className="text-eyebrow text-text-tertiary">RESET PASSWORD</p>
-      <h1 className="mt-1 text-h2 text-text-primary">Forgot your password?</h1>
-      <p className="mt-1 text-body-sm text-text-secondary">
-        Enter your email and we&apos;ll send you a reset link.
-      </p>
+    <RiseCard
+      delay={0.1}
+      className="-mt-6 w-full max-w-[420px] rounded-lg border border-subtle bg-surface-card p-6 shadow-lg lg:mt-0 lg:shadow-md"
+    >
+      <BlurFadeIn as="p" delay={0.2}>
+        <p className="text-eyebrow text-text-tertiary">RESET PASSWORD</p>
+      </BlurFadeIn>
+      <BlurFadeIn as="p" delay={0.28}>
+        <h1 className="mt-1 text-h2 text-text-primary">Forgot your password?</h1>
+      </BlurFadeIn>
+      <BlurFadeIn as="p" delay={0.36}>
+        <p className="mt-1 text-body-sm text-text-secondary">
+          Enter your email and we&apos;ll send you a reset link.
+        </p>
+      </BlurFadeIn>
 
       {submitted ? (
         <p className="mt-6 text-body-sm text-text-primary">
@@ -63,9 +74,15 @@ export default function ForgotPasswordPage() {
                 </FormItem>
               )}
             />
-            <Button type="submit" variant="primary" size="lg" className="w-full" disabled={submitting}>
+            <ShimmerButton
+              type="submit"
+              variant="primary"
+              size="lg"
+              className="w-full"
+              disabled={submitting}
+            >
               {submitting ? 'Sending…' : 'Send reset link'}
-            </Button>
+            </ShimmerButton>
           </form>
         </Form>
       )}
@@ -75,6 +92,6 @@ export default function ForgotPasswordPage() {
           Back to sign in
         </Link>
       </div>
-    </>
+    </RiseCard>
   );
 }

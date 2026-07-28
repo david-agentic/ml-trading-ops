@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import { LenisProvider } from '@/components/providers/LenisProvider';
 import { QueryProvider } from '@/components/providers/query-provider';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
@@ -18,7 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="font-sans">
         <ThemeProvider>
           <QueryProvider>
-            {children}
+            <LenisProvider>{children}</LenisProvider>
             <Toaster />
           </QueryProvider>
         </ThemeProvider>
