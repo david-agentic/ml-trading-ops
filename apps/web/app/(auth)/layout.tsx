@@ -11,30 +11,23 @@ export const metadata: Metadata = {
 
 /**
  * §15.10 shared split-layout shell for /login, /forgot-password,
- * /reset-password. Left panel is fully static (logo, brand statement,
- * illustration, footer) - identical on every auth page. Each page provides
- * only its card content via {children}.
+ * /reset-password. Left panel: brand statement + illustration as one
+ * vertically-centered composed group (no small corner logo — the brand
+ * is carried by the statement itself). Right panel: card, vertically
+ * centered.
  *
- * Gate 2 v2 premium polish additions (subtle, corporate — never playful):
- *   - AnimatedDotPattern behind the left panel: static dot grid + one
- *     slow-drifting accent-color spotlight (~18s loop).
- *   - BlurFadeInWords on the "Operations that scale." headline: staggered
- *     word reveal with blur → focus on first paint.
- *   - BlurFadeIn on the tagline and illustration.
- * All motion respects prefers-reduced-motion.
+ * Mobile (< lg): left panel becomes a compact hero band at the top with
+ * a small centered logo strip; illustration is hidden (no vertical room).
  *
- * Dark mode: no dark: variants needed here - --surface-canvas/--surface-card
- * already swap to --brand-navy-800/--brand-navy-700 under .dark (see
- * globals.css), so bg-surface-canvas/bg-surface-card do the right thing in
- * both modes automatically. The left panel is unchanged in dark mode per
- * spec (already dark).
+ * Dark mode: no dark: variants needed — --surface-canvas swaps
+ * automatically. Left panel is unchanged in dark mode per spec.
  */
 export default function AuthLayout({ children }: { children: ReactNode }) {
   return (
     <div className="lg:grid lg:min-h-screen lg:grid-cols-[45%_55%]">
-      {/* Left panel - dark, §15.10. Mobile: hero band, h = min(240px, 30vh). Desktop: full height. */}
-      <div className="relative flex h-[min(240px,30vh)] flex-col justify-center overflow-hidden bg-brand-navy-950 px-6 py-8 lg:h-auto lg:justify-between lg:px-12 lg:py-12">
-        {/* Base radial glow — kept from v1, adds warmth to the corner */}
+      {/* Left panel — dark navy, animated dot-grid + spotlight background */}
+      <div className="relative flex h-[min(220px,28vh)] flex-col items-center justify-center overflow-hidden bg-brand-navy-950 px-6 py-8 lg:h-auto lg:min-h-screen lg:items-stretch lg:px-12 lg:py-16">
+        {/* Base radial glow — warms the top-left corner on desktop */}
         <div
           className="pointer-events-none absolute inset-0"
           style={{
@@ -44,21 +37,12 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
           }}
         />
 
-        {/* NEW: animated dot pattern + drifting spotlight */}
+        {/* Animated dot pattern + drifting accent spotlight */}
         <AnimatedDotPattern />
 
-        {/* Logo - top-left on desktop, centered on mobile */}
-        <div className="relative z-10 hidden lg:block">
-          <Image
-            src="/brand/logo-full-white.png"
-            alt="ML Trading International"
-            width={160}
-            height={44}
-            className="h-10 w-auto"
-            priority
-          />
-        </div>
-        <div className="relative z-10 flex justify-center lg:hidden">
+        {/* Mobile-only logo strip — desktop composition doesn't need a
+            small corner logo, the brand statement carries identity */}
+        <div className="relative z-10 mb-3 flex justify-center lg:hidden">
           <Image
             src="/brand/logo-full-white.png"
             alt="ML Trading International"
@@ -69,31 +53,37 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
           />
         </div>
 
-        {/* Brand statement + illustration - centered group on desktop, condensed on mobile */}
-        <div className="relative z-10 mt-4 flex flex-col items-center gap-3 text-center lg:mt-0 lg:flex-1 lg:items-start lg:justify-center lg:gap-5 lg:text-left">
-          <h2 className="text-h3 text-white lg:text-h2">
+        {/* Centered composition: statement + tagline + big illustration.
+            On desktop this whole group is vertically centered as one unit
+            using flex-1 + justify-center. */}
+        <div className="relative z-10 flex flex-col items-center gap-3 text-center lg:flex-1 lg:items-start lg:justify-center lg:gap-6 lg:text-left">
+          <h2 className="text-h3 text-white lg:text-[3.25rem] lg:leading-[1.05] lg:font-semibold">
             <BlurFadeInWords text="Operations that scale." stagger={0.08} startDelay={0.15} />
           </h2>
           <BlurFadeIn delay={0.55}>
-            <p className="max-w-xs text-body-sm text-white/70 lg:text-body-lg">
+            <p className="max-w-md text-body-sm text-white/70 lg:text-body-lg lg:leading-relaxed">
               The complete B2B operations platform for modern distributors.
             </p>
           </BlurFadeIn>
-          <div className="hidden lg:block">
+
+          {/* Illustration — hidden on mobile (hero band has no room),
+              much larger on desktop so it feels present, not floating. */}
+          <div className="hidden lg:mt-4 lg:block lg:w-full">
             <BlurFadeIn delay={0.75}>
-              <AuthIllustration className="h-auto w-[260px]" />
+              <AuthIllustration className="h-auto w-full max-w-[480px]" />
             </BlurFadeIn>
           </div>
         </div>
 
-        {/* Footer - desktop only (mobile hero has no room to spare) */}
-        <div className="relative z-10 hidden text-micro text-white/40 lg:block">
+        {/* Footer — desktop only. Positioned absolutely at bottom so it
+            doesn't affect vertical centering of the composition above. */}
+        <div className="pointer-events-none absolute bottom-6 left-12 right-12 z-10 hidden text-micro text-white/40 lg:block">
           © 2026 ML Trading International Ltd
         </div>
       </div>
 
-      {/* Right panel - §15.10 */}
-      <div className="flex flex-1 items-center justify-center bg-surface-canvas px-4 py-8 lg:min-h-screen lg:px-8">
+      {/* Right panel — canvas surface, card vertically centered */}
+      <div className="flex min-h-[calc(100vh-min(220px,28vh))] flex-1 items-center justify-center bg-surface-canvas px-4 py-10 lg:min-h-screen lg:px-8 lg:py-12">
         {children}
       </div>
     </div>

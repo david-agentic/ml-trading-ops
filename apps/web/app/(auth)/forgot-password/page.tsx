@@ -36,7 +36,7 @@ export default function ForgotPasswordPage() {
   return (
     <RiseCard
       delay={0.1}
-      className="-mt-6 w-full max-w-[420px] rounded-lg border border-subtle bg-surface-card p-6 shadow-lg lg:mt-0 lg:shadow-md"
+      className="w-full max-w-[420px] rounded-lg border border-subtle bg-surface-card p-6 shadow-lg lg:mt-0 lg:shadow-md"
     >
       <BlurFadeIn as="p" delay={0.2}>
         <p className="text-eyebrow text-text-tertiary">RESET PASSWORD</p>

@@ -15,7 +15,7 @@ import { Input } from '@/components/ui/input';
 import { ApiClientError, apiClient } from '@/lib/api-client';
 
 const CARD_CLASS =
-  '-mt-6 w-full max-w-[420px] rounded-lg border border-subtle bg-surface-card p-6 shadow-lg lg:mt-0 lg:shadow-md';
+  'w-full max-w-[420px] rounded-lg border border-subtle bg-surface-card p-6 shadow-lg lg:mt-0 lg:shadow-md';
 
 // passwordResetConfirmSchema (packages/shared) only covers {token,
 // newPassword} — the confirm-match check is a form-only concern, so it's
