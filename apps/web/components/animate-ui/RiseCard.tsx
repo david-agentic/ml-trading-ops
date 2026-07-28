@@ -1,7 +1,7 @@
 'use client';
 
-import { motion, type HTMLMotionProps } from 'motion/react';
-import type { ReactNode } from 'react';
+import { motion } from 'motion/react';
+import type { ComponentProps, ReactNode } from 'react';
 
 /**
  * Card wrapper that rises into place on mount and has a very subtle hover
@@ -11,16 +11,15 @@ import type { ReactNode } from 'react';
  * Deliberately does NOT tilt, glow, or animate on hover beyond shadow.
  * Corporate rule: motion should signal quality, never call attention to itself.
  */
-export function RiseCard({
-  children,
-  className,
-  delay = 0.05,
-  ...rest
-}: {
+type MotionDivProps = ComponentProps<typeof motion.div>;
+
+interface RiseCardProps extends Omit<MotionDivProps, 'children'> {
   children: ReactNode;
   className?: string;
   delay?: number;
-} & Omit<HTMLMotionProps<'div'>, 'ref'>) {
+}
+
+export function RiseCard({ children, className, delay = 0.05, ...rest }: RiseCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 14 }}
