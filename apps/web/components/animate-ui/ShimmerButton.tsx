@@ -17,7 +17,7 @@ type ShimmerButtonProps = Omit<
   'className'
 > & {
   className?: string;
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'lg' | 'default' | 'icon';
   variant?: 'primary' | 'secondary' | 'ghost';
   disabled?: boolean;
   children: React.ReactNode;
